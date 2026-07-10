@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>BK ♥ EH 결혼합니다</title>
+<meta property="og:title" content="BK ♥ EH 결혼합니다" />
+<meta property="og:description" content="2026년 00월 00일, 저희 두 사람 새로운 시작을 함께해주세요." />
+<meta property="og:image" content="images/cover.jpg" />
+<meta property="og:type" content="website" />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<div class="wrap">
+
+  <!-- 커버 -->
+  <section class="section cover">
+    <p class="eyebrow">WEDDING INVITATION</p>
+    <h1 class="names">BK <span class="amp">&amp;</span> EH</h1>
+    <p class="date" id="coverDateText">2026. 00. 00. SAT PM 00:00</p>
+    <p class="venue" id="coverVenueText">00웨딩홀 0층 0홀</p>
+  </section>
+
+  <!-- 인사말 -->
+  <section class="section greeting">
+    <p class="section-label">INVITATION</p>
+    <p class="greeting-text">
+      서로가 마주 보며 걸어온 길이<br />
+      이제 같은 곳을 바라보며<br />
+      함께 걷는 길이 되려 합니다.<br /><br />
+      저희 두 사람의 새로운 시작을<br />
+      축복해 주시면 감사하겠습니다.
+    </p>
+    <div class="family-info">
+      <p><span class="role">신랑</span> 000 · 000 의 아들 <strong>BK</strong></p>
+      <p><span class="role">신부</span> 000 · 000 의 딸 <strong>EH</strong></p>
+    </div>
+  </section>
+
+  <!-- 캘린더 -->
+  <section class="section calendar-section">
+    <p class="section-label">WEDDING DAY</p>
+    <h2 class="calendar-date" id="calendarDateText">2026년 00월 00일 토요일 오후 0시</h2>
+    <div class="calendar" id="calendar"></div>
+    <p class="dday" id="dday"></p>
+  </section>
+
+  <!-- 갤러리 -->
+  <section class="section gallery-section">
+    <p class="section-label">GALLERY</p>
+    <div class="gallery" id="gallery">
+      <!-- images/gallery/1.jpg ~ 6.jpg 를 넣어주세요 -->
+      <div class="gallery-item placeholder">1</div>
+      <div class="gallery-item placeholder">2</div>
+      <div class="gallery-item placeholder">3</div>
+      <div class="gallery-item placeholder">4</div>
+      <div class="gallery-item placeholder">5</div>
+      <div class="gallery-item placeholder">6</div>
+    </div>
+  </section>
+
+  <!-- 오시는 길 -->
+  <section class="section location-section">
+    <p class="section-label">LOCATION</p>
+    <h2 class="venue-name" id="venueNameText">00웨딩홀 0층 0홀</h2>
+    <p class="venue-address" id="venueAddress">서울특별시 00구 00로 00</p>
+    <button class="copy-btn" data-copy-target="venueAddress">주소 복사</button>
+
+    <div class="map-embed">
+      <!-- 카카오/네이버 지도 iframe 또는 스크립트로 교체하세요 -->
+      <div class="map-placeholder">지도 영역 (지도 API 연동 예정)</div>
+    </div>
+
+    <div class="transport">
+      <div class="transport-item">
+        <h3>지하철</h3>
+        <p>0호선 00역 0번 출구 도보 0분</p>
+      </div>
+      <div class="transport-item">
+        <h3>버스</h3>
+        <p>00번, 00번 · 00정류장 하차</p>
+      </div>
+      <div class="transport-item">
+        <h3>주차</h3>
+        <p>건물 내 주차장 이용 (2시간 무료)</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 마음 전하실 곳 -->
+  <section class="section account-section">
+    <p class="section-label">GIFT</p>
+    <p class="account-desc">
+      참석이 어려우신 분들을 위해<br />
+      계좌번호를 안내드립니다.
+    </p>
+
+    <div class="accordion">
+      <button class="accordion-toggle">신랑측 마음 전하실 곳 <span class="chevron">▾</span></button>
+      <div class="accordion-panel">
+        <div class="account-item">
+          <p class="account-role">신랑 BK</p>
+          <p class="account-num" id="acc1">000은행 000-0000-0000</p>
+          <button class="copy-btn small" data-copy-target="acc1">복사</button>
+        </div>
+        <div class="account-item">
+          <p class="account-role">신랑 아버지 000</p>
+          <p class="account-num" id="acc2">000은행 000-0000-0000</p>
+          <button class="copy-btn small" data-copy-target="acc2">복사</button>
+        </div>
+        <div class="account-item">
+          <p class="account-role">신랑 어머니 000</p>
+          <p class="account-num" id="acc3">000은행 000-0000-0000</p>
+          <button class="copy-btn small" data-copy-target="acc3">복사</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="accordion">
+      <button class="accordion-toggle">신부측 마음 전하실 곳 <span class="chevron">▾</span></button>
+      <div class="accordion-panel">
+        <div class="account-item">
+          <p class="account-role">신부 EH</p>
+          <p class="account-num" id="acc4">000은행 000-0000-0000</p>
+          <button class="copy-btn small" data-copy-target="acc4">복사</button>
+        </div>
+        <div class="account-item">
+          <p class="account-role">신부 아버지 000</p>
+          <p class="account-num" id="acc5">000은행 000-0000-0000</p>
+          <button class="copy-btn small" data-copy-target="acc5">복사</button>
+        </div>
+        <div class="account-item">
+          <p class="account-role">신부 어머니 000</p>
+          <p class="account-num" id="acc6">000은행 000-0000-0000</p>
+          <button class="copy-btn small" data-copy-target="acc6">복사</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 공유 -->
+  <section class="section share-section">
+    <p class="section-label">SHARE</p>
+    <p class="share-desc">청첩장을 공유해보세요</p>
+    <div class="share-buttons">
+      <button id="shareKakao" class="share-btn kakao">카카오톡 공유</button>
+      <button id="shareLink" class="share-btn link">링크 복사</button>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>BK &amp; EH</p>
+  </footer>
+
+</div>
+
+<script src="js/main.js"></script>
+</body>
+</html>
