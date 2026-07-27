@@ -138,6 +138,31 @@
     </div>
   </section>
 
+  <!-- 방명록 -->
+  <section class="section guestbook-section">
+    <p class="section-label">GUESTBOOK</p>
+    <p class="guestbook-desc">축하의 한마디를 남겨주세요</p>
+
+    <form class="guestbook-form" id="guestbookForm">
+      <div class="gb-field-row">
+        <input type="text" id="gbName" placeholder="이름" autocomplete="name" />
+        <input type="password" id="gbPassword" placeholder="비밀번호" autocomplete="new-password" />
+      </div>
+      <textarea id="gbMessage" rows="3" placeholder="따뜻한 축하 메시지를 남겨주세요"></textarea>
+      <div class="gb-form-footer">
+        <span class="gb-counter" id="gbCounter"></span>
+        <button type="submit" class="gb-submit" id="gbSubmit">남기기</button>
+      </div>
+    </form>
+
+    <p class="gb-status" id="gbStatus" hidden></p>
+    <p class="gb-empty" id="gbEmpty" hidden>
+      아직 남겨진 메시지가 없습니다.<br />첫 번째 축하를 전해주세요.
+    </p>
+    <ul class="guestbook-list" id="guestbookList"></ul>
+    <button type="button" class="gb-more" id="gbMore" hidden></button>
+  </section>
+
   <!-- 공유 -->
   <section class="section share-section">
     <p class="section-label">SHARE</p>
@@ -154,6 +179,21 @@
 
 </div>
 
+<!-- 방명록 삭제 확인 -->
+<div class="gb-modal" id="gbModal" hidden>
+  <div class="gb-modal-backdrop" data-gb-close></div>
+  <div class="gb-modal-box" role="dialog" aria-modal="true" aria-labelledby="gbModalTitle">
+    <p class="gb-modal-title" id="gbModalTitle">메시지 삭제</p>
+    <p class="gb-modal-desc">메시지를 남길 때 입력한 비밀번호를 입력해주세요.</p>
+    <input type="password" id="gbDeletePassword" placeholder="비밀번호" autocomplete="off" />
+    <div class="gb-modal-buttons">
+      <button type="button" class="gb-modal-btn" data-gb-close>취소</button>
+      <button type="button" class="gb-modal-btn danger" id="gbDeleteConfirm">삭제</button>
+    </div>
+  </div>
+</div>
+
 <script src="js/main.js"></script>
+<script src="js/guestbook.js"></script>
 </body>
 </html>
