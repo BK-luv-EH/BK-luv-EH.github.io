@@ -309,6 +309,228 @@ body {
   flex: 1;
 }
 
+/* 방명록 */
+.guestbook-desc {
+  font-size: 14px;
+  color: #7a6f5e;
+  margin-bottom: 24px;
+}
+
+.guestbook-form {
+  text-align: left;
+  margin-bottom: 28px;
+}
+
+.gb-field-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.gb-field-row input {
+  flex: 1;
+  min-width: 0;
+}
+
+.guestbook-form input,
+.guestbook-form textarea,
+.gb-modal-box input {
+  font-family: inherit;
+  font-size: 14px;
+  color: #4a4238;
+  background: #fffdfa;
+  border: 1px solid #e2d6c0;
+  border-radius: 6px;
+  padding: 11px 12px;
+  width: 100%;
+}
+
+.guestbook-form input::placeholder,
+.guestbook-form textarea::placeholder,
+.gb-modal-box input::placeholder {
+  color: #bfb3a0;
+}
+
+.guestbook-form input:focus,
+.guestbook-form textarea:focus,
+.gb-modal-box input:focus {
+  outline: none;
+  border-color: #c9ab7d;
+}
+
+.guestbook-form textarea {
+  display: block;
+  resize: vertical;
+  line-height: 1.7;
+}
+
+.gb-form-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.gb-counter {
+  font-size: 12px;
+  color: #b9a98f;
+}
+
+.gb-submit {
+  font-family: inherit;
+  border: none;
+  background: #c9ab7d;
+  color: #fff;
+  font-size: 14px;
+  padding: 10px 26px;
+  border-radius: 22px;
+  cursor: pointer;
+}
+
+.gb-submit:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.gb-status,
+.gb-empty {
+  font-size: 13px;
+  color: #b9a98f;
+  line-height: 1.9;
+  padding: 24px 0;
+  border-top: 1px solid #eee4d8;
+}
+
+.guestbook-list {
+  list-style: none;
+  text-align: left;
+}
+
+.gb-item {
+  padding: 18px 2px;
+  border-top: 1px solid #eee4d8;
+}
+
+.gb-item-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.gb-item-name {
+  font-size: 14px;
+  color: #5c5346;
+}
+
+.gb-item-date {
+  font-size: 12px;
+  color: #b9a98f;
+  flex: 1;
+}
+
+.gb-item-delete {
+  background: none;
+  border: none;
+  color: #cabba2;
+  font-size: 18px;
+  line-height: 1;
+  padding: 2px 4px;
+  cursor: pointer;
+}
+
+.gb-item-message {
+  font-size: 14px;
+  color: #5c5346;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.gb-more {
+  font-family: inherit;
+  width: 100%;
+  background: none;
+  border: none;
+  border-top: 1px solid #eee4d8;
+  color: #a8916e;
+  font-size: 13px;
+  padding: 16px 0;
+  cursor: pointer;
+}
+
+/* 방명록 삭제 모달 */
+.gb-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+}
+
+.gb-modal[hidden] {
+  display: none;
+}
+
+.gb-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(60, 54, 46, 0.45);
+}
+
+.gb-modal-box {
+  position: relative;
+  width: 100%;
+  max-width: 300px;
+  background: #fffdfa;
+  border-radius: 10px;
+  padding: 28px 24px 20px;
+  text-align: center;
+}
+
+.gb-modal-title {
+  font-size: 16px;
+  color: #4a4238;
+  margin-bottom: 6px;
+}
+
+.gb-modal-desc {
+  font-size: 13px;
+  color: #8a7d6a;
+  line-height: 1.7;
+  margin-bottom: 16px;
+}
+
+.gb-modal-buttons {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.gb-modal-btn {
+  font-family: inherit;
+  flex: 1;
+  font-size: 14px;
+  padding: 11px 0;
+  border-radius: 22px;
+  border: 1px solid #e2d6c0;
+  background: #fffdfa;
+  color: #7a6f5e;
+  cursor: pointer;
+}
+
+.gb-modal-btn.danger {
+  background: #c9ab7d;
+  border-color: #c9ab7d;
+  color: #fff;
+}
+
+.gb-modal-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
 /* 공유 */
 .share-desc {
   font-size: 14px;
