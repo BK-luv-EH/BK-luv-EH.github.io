@@ -10,7 +10,14 @@ const CONFIG = {
   venueAddress: '서울특별시 구로구 새말로 97 신도림테크노마트 8층 웨딩시티',
   // 카카오 개발자센터에서 발급받은 JavaScript 키. 비워두면 지도 대신 안내 문구가 표시됩니다.
   kakaoMapKey: 'ef5c92b80f52634d05d1e5abf4752244',
+  // 카카오톡 공유도 같은 JavaScript 키를 씁니다.
+  kakaoShareKey: 'ef5c92b80f52634d05d1e5abf4752244',
+  // 공유 카드가 가리킬 실제 주소. 로컬에서 눌러도 배포된 주소로 공유되도록 고정합니다.
+  siteUrl: 'https://bk-luv-eh.github.io',
+  shareImage: 'images/cover.jpg',
 };
+
+const KAKAO_SDK_VERSION = '2.7.5';
 
 document.addEventListener('DOMContentLoaded', () => {
   renderTexts();
@@ -313,21 +320,77 @@ function showToast(message) {
   toast._timer = setTimeout(() => toast.classList.remove('show'), 1800);
 }
 
+function shareUrl(path) {
+  // 로컬에서 눌러도 하객에게는 배포된 주소가 전달되어야 합니다.
+  return new URL(path || '', `${CONFIG.siteUrl}/`).href;
+}
+
+function shareDescription() {
+  const d = CONFIG.weddingDate;
+  const days = ['일', '월', '화', '수', '목', '금', '토'];
+  const hour24 = d.getHours();
+  const ampm = hour24 < 12 ? '오전' : '오후';
+  const hour12 = hour24 % 12 === 0 ? 12 : hour24 % 12;
+  const minutes = d.getMinutes() ? ` ${d.getMinutes()}분` : '';
+  return (
+    `${d.getFullYear()}년 ${d.getMonth() + 1}월 ${d.getDate()}일 ${days[d.getDay()]}요일 ` +
+    `${ampm} ${hour12}시${minutes}\n${CONFIG.venueName}`
+  );
+}
+
+function loadKakaoShareSdk() {
+  if (window.Kakao && window.Kakao.Share) return Promise.resolve();
+
+  return new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    script.src = `https://t1.kakaocdn.net/kakao_js_sdk/${KAKAO_SDK_VERSION}/kakao.min.js`;
+    script.onload = () => {
+      try {
+        if (!window.Kakao.isInitialized()) window.Kakao.init(CONFIG.kakaoShareKey);
+        resolve();
+      } catch (e) {
+        reject(e);
+      }
+    };
+    script.onerror = () => reject(new Error('카카오 SDK를 불러오지 못했습니다'));
+    document.head.appendChild(script);
+  });
+}
+
 function initShare() {
   const linkBtn = document.getElementById('shareLink');
   if (linkBtn) {
     linkBtn.addEventListener('click', () => {
-      copyText(window.location.href);
+      copyText(shareUrl());
     });
   }
 
   const kakaoBtn = document.getElementById('shareKakao');
   if (kakaoBtn) {
     kakaoBtn.addEventListener('click', () => {
-      // 카카오 SDK 연동 전까지는 안내만 표시합니다.
-      // 사용 방법: https://developers.kakao.com/docs/latest/ko/message/js-link 참고 후
-      // Kakao.Share.sendDefault({ ... }) 형태로 교체하세요.
-      showToast('카카오톡 공유 기능은 Kakao SDK 연동이 필요합니다');
+      if (!CONFIG.kakaoShareKey) {
+        showToast('카카오톡 공유를 쓰려면 JavaScript 키가 필요합니다');
+        return;
+      }
+
+      const link = { mobileWebUrl: shareUrl(), webUrl: shareUrl() };
+      loadKakaoShareSdk()
+        .then(() => {
+          Kakao.Share.sendDefault({
+            objectType: 'feed',
+            content: {
+              title: `${CONFIG.groom} ♥ ${CONFIG.bride} 결혼합니다`,
+              description: shareDescription(),
+              imageUrl: shareUrl(CONFIG.shareImage),
+              link,
+            },
+            buttons: [{ title: '청첩장 보기', link }],
+          });
+        })
+        .catch((e) => {
+          console.error(e);
+          showToast('카카오톡 공유를 사용할 수 없습니다. 링크 복사를 이용해주세요.');
+        });
     });
   }
 }
