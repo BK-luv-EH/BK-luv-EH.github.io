@@ -64,11 +64,52 @@ body {
 .cover-scroll {
   position: absolute;
   left: 50%;
-  bottom: 28px;
-  width: 1px;
-  height: 40px;
-  margin-left: -0.5px;
-  background: linear-gradient(180deg, rgba(74, 66, 56, 0) 0%, rgba(74, 66, 56, 0.5) 100%);
+  bottom: 20px;
+  transform: translateX(-50%);
+  /* 손가락으로 누르기 편한 최소 크기를 확보합니다. */
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.cover-scroll-arrow {
+  width: 14px;
+  height: 14px;
+  margin-top: -6px;
+  /* 배경 없이 사진 위에 바로 얹히므로, 그림자로 윤곽을 만들어 밝은 곳에서도 보이게 합니다. */
+  border-right: 1.5px solid #fffdfa;
+  border-bottom: 1.5px solid #fffdfa;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.55)) drop-shadow(0 0 1px rgba(0, 0, 0, 0.4));
+  /* 45도 돌린 정사각형의 두 변으로 ∨ 모양을 만듭니다. */
+  transform: rotate(45deg);
+  animation: coverScrollBlink 1.6s ease-in-out infinite;
+}
+
+@keyframes coverScrollBlink {
+  0%,
+  100% {
+    opacity: 0.2;
+    /* 회전된 좌표계라 (3px, 3px)가 화면상 아래쪽 이동이 됩니다. */
+    transform: rotate(45deg) translate(0, 0);
+  }
+  50% {
+    opacity: 1;
+    transform: rotate(45deg) translate(3px, 3px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cover-scroll-arrow {
+    animation: none;
+    opacity: 0.8;
+  }
 }
 
 .eyebrow {
@@ -684,6 +725,47 @@ body {
   right: -6px;
   border-top: 1px solid currentColor;
   transform: rotate(-45deg);
+}
+
+/* 맨 위로 */
+.to-top {
+  position: fixed;
+  bottom: 20px;
+  /* 음악 버튼과 같은 기준: 데스크톱은 카드 안쪽, 모바일은 화면 가장자리 */
+  right: max(16px, calc(50% - 224px));
+  z-index: 150;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: rgba(255, 253, 250, 0.85);
+  border: 1px solid #e2d6c0;
+  border-radius: 50%;
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px);
+  transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.to-top.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.to-top-arrow {
+  width: 10px;
+  height: 10px;
+  margin-top: 3px;
+  border-left: 1.5px solid #a8916e;
+  border-top: 1.5px solid #a8916e;
+  transform: rotate(45deg);
 }
 
 /* 토스트 */
