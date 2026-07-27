@@ -2,12 +2,14 @@
    여기 값들만 바꾸면 전체 페이지에 반영됩니다.
    ================================ */
 const CONFIG = {
-  groom: 'BK',
-  bride: 'EH',
+  groom: '서배규',
+  bride: '양은희',
   // JS Date 형식: new Date(년, 월-1, 일, 시, 분)
-  weddingDate: new Date(2026, 10, 14, 13, 0), // 2026-11-14 13:00 (예시, 실제 날짜로 교체하세요)
-  venueName: '00웨딩홀 0층 0홀',
-  venueAddress: '서울특별시 00구 00로 00',
+  weddingDate: new Date(2027, 0, 16, 13, 20), // 2027-01-16 13:20
+  venueName: '신도림 웨딩시티 8층 아모르홀',
+  venueAddress: '서울특별시 구로구 새말로 97 신도림테크노마트 8층 웨딩시티',
+  // 카카오 개발자센터에서 발급받은 JavaScript 키. 비워두면 지도 대신 안내 문구가 표시됩니다.
+  kakaoMapKey: 'ef5c92b80f52634d05d1e5abf4752244',
 };
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -17,6 +19,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initAccordion();
   initCopyButtons();
   initShare();
+  initMap();
+  initBgm();
 });
 
 function renderTexts() {
@@ -107,6 +111,147 @@ function renderDday() {
   }
 }
 
+/* ---------- 배경음악 ---------- */
+
+function initBgm() {
+  const audio = document.getElementById('bgm');
+  const toggle = document.getElementById('bgmToggle');
+  if (!audio || !toggle) return;
+
+  audio.volume = 0.4;
+  let stoppedByUser = false;
+
+  const setState = (playing) => {
+    toggle.classList.toggle('off', !playing);
+    toggle.setAttribute('aria-pressed', String(playing));
+    toggle.setAttribute('aria-label', playing ? '배경음악 끄기' : '배경음악 켜기');
+  };
+
+  const tryPlay = () =>
+    audio
+      .play()
+      .then(() => true)
+      .catch(() => false);
+
+  audio.addEventListener('play', () => setState(true));
+  audio.addEventListener('pause', () => setState(false));
+  setState(false);
+
+  toggle.addEventListener('click', () => {
+    if (audio.paused) {
+      stoppedByUser = false;
+      tryPlay();
+    } else {
+      stoppedByUser = true;
+      audio.pause();
+    }
+  });
+
+  // 모바일 브라우저는 소리 있는 자동재생을 막습니다.
+  // 막히면 하객이 화면을 처음 건드릴 때 재생을 시작합니다.
+  tryPlay().then((started) => {
+    if (started) return;
+
+    const events = ['pointerdown', 'touchstart', 'keydown'];
+    const onFirstGesture = (event) => {
+      // 음악 버튼을 눌러 켜는 경우는 버튼 핸들러가 처리합니다.
+      if (event.target.closest && event.target.closest('#bgmToggle')) return;
+      if (stoppedByUser) {
+        cleanup();
+        return;
+      }
+      tryPlay().then((ok) => {
+        if (ok) cleanup();
+      });
+    };
+    const cleanup = () => events.forEach((name) => window.removeEventListener(name, onFirstGesture));
+
+    events.forEach((name) => window.addEventListener(name, onFirstGesture, { passive: true }));
+  });
+}
+
+/* ---------- 지도 ---------- */
+
+function initMap() {
+  const container = document.getElementById('map');
+  if (!container) return;
+
+  // 좌표를 모르는 상태에서도 지도 앱 링크는 주소 검색으로 동작합니다.
+  setMapLinks(null);
+
+  if (!CONFIG.kakaoMapKey) {
+    showMapFallback('지도를 표시하려면 카카오 JavaScript 키가 필요합니다');
+    return;
+  }
+
+  loadKakaoMapSdk()
+    .then(() => renderKakaoMap(container))
+    .catch(() => {
+      showMapFallback('지도를 불러오지 못했습니다. 아래 버튼으로 지도 앱에서 확인해주세요.');
+    });
+}
+
+function loadKakaoMapSdk() {
+  if (window.kakao && window.kakao.maps) return Promise.resolve();
+
+  return new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${CONFIG.kakaoMapKey}&libraries=services&autoload=false`;
+    script.onload = () => window.kakao.maps.load(resolve);
+    script.onerror = () => reject(new Error('카카오맵 SDK를 불러오지 못했습니다'));
+    document.head.appendChild(script);
+  });
+}
+
+function renderKakaoMap(container) {
+  // 좌표를 직접 적어두지 않고 주소로 찾습니다. CONFIG.venueAddress만 고치면 지도도 따라갑니다.
+  new kakao.maps.services.Geocoder().addressSearch(CONFIG.venueAddress, (result, status) => {
+    if (status !== kakao.maps.services.Status.OK || !result.length) {
+      showMapFallback('주소를 찾지 못했습니다. 아래 버튼으로 지도 앱에서 확인해주세요.');
+      return;
+    }
+
+    const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+    const map = new kakao.maps.Map(container, { center: coords, level: 4 });
+    const marker = new kakao.maps.Marker({ map, position: coords });
+
+    new kakao.maps.InfoWindow({
+      content: `<div style="padding:6px 10px;font-size:12px;white-space:nowrap;">${CONFIG.venueName}</div>`,
+    }).open(map, marker);
+
+    // 손가락으로 페이지를 스크롤하다 지도에 걸려 멈추는 것을 막습니다.
+    map.setZoomable(false);
+    kakao.maps.event.addListener(map, 'click', () => map.setZoomable(true));
+
+    setMapLinks(coords);
+  });
+}
+
+function setMapLinks(coords) {
+  const name = encodeURIComponent(CONFIG.venueName);
+  const query = encodeURIComponent(CONFIG.venueAddress);
+
+  const kakaoLink = document.getElementById('mapLinkKakao');
+  if (kakaoLink) {
+    kakaoLink.href = coords
+      ? `https://map.kakao.com/link/to/${name},${coords.getLat()},${coords.getLng()}`
+      : `https://map.kakao.com/link/search/${query}`;
+  }
+
+  const naverLink = document.getElementById('mapLinkNaver');
+  if (naverLink) naverLink.href = `https://map.naver.com/p/search/${query}`;
+}
+
+function showMapFallback(message) {
+  const container = document.getElementById('map');
+  const fallback = document.getElementById('mapFallback');
+  if (container) container.hidden = true;
+  if (fallback) {
+    fallback.hidden = false;
+    fallback.textContent = message;
+  }
+}
+
 function initAccordion() {
   document.querySelectorAll('.accordion-toggle').forEach((btn) => {
     btn.addEventListener('click', () => {
@@ -128,22 +273,31 @@ function initCopyButtons() {
 
 function copyText(text) {
   if (navigator.clipboard && window.isSecureContext) {
-    navigator.clipboard.writeText(text).then(() => showToast('복사되었습니다'));
-  } else {
-    const textarea = document.createElement('textarea');
-    textarea.value = text;
-    textarea.style.position = 'fixed';
-    textarea.style.opacity = '0';
-    document.body.appendChild(textarea);
-    textarea.select();
-    try {
-      document.execCommand('copy');
-      showToast('복사되었습니다');
-    } catch (e) {
-      showToast('복사에 실패했습니다');
-    }
-    document.body.removeChild(textarea);
+    // writeText는 문서에 포커스가 없는 등의 이유로 거부될 수 있으므로
+    // 실패하면 구형 방식으로 한 번 더 시도합니다.
+    navigator.clipboard
+      .writeText(text)
+      .then(() => showToast('복사되었습니다'))
+      .catch(() => copyTextFallback(text));
+    return;
   }
+  copyTextFallback(text);
+}
+
+function copyTextFallback(text) {
+  const textarea = document.createElement('textarea');
+  textarea.value = text;
+  textarea.style.position = 'fixed';
+  textarea.style.opacity = '0';
+  document.body.appendChild(textarea);
+  textarea.select();
+  try {
+    const ok = document.execCommand('copy');
+    showToast(ok ? '복사되었습니다' : '복사에 실패했습니다');
+  } catch (e) {
+    showToast('복사에 실패했습니다');
+  }
+  document.body.removeChild(textarea);
 }
 
 function showToast(message) {
