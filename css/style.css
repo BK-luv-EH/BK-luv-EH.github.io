@@ -190,16 +190,47 @@ body {
   margin: 24px 0;
 }
 
-.map-placeholder {
+.map {
   width: 100%;
   height: 220px;
+  border-radius: 8px;
+  background: #e8e0d2;
+}
+
+.map-placeholder {
+  width: 100%;
+  min-height: 220px;
+  padding: 0 24px;
   background: #e8e0d2;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #a8916e;
   font-size: 13px;
+  line-height: 1.8;
   border-radius: 8px;
+}
+
+.map-placeholder[hidden],
+.map[hidden] {
+  display: none;
+}
+
+.map-links {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.map-link {
+  flex: 1;
+  padding: 10px 0;
+  font-size: 13px;
+  color: #a8916e;
+  text-align: center;
+  text-decoration: none;
+  border: 1px solid #d8c9ac;
+  border-radius: 20px;
 }
 
 .transport {
@@ -223,6 +254,14 @@ body {
   font-size: 14px;
   color: #5c5346;
 }
+
+.transport-note {
+  font-size: 13px;
+  color: #8a7d6a;
+  line-height: 1.7;
+  margin-top: 4px;
+}
+
 
 /* 버튼 공통 */
 .copy-btn {
@@ -569,6 +608,44 @@ body {
   font-size: 13px;
   color: #b9a98f;
   letter-spacing: 2px;
+}
+
+/* 배경음악 */
+.bgm-toggle {
+  position: fixed;
+  top: 16px;
+  /* 데스크톱에서는 카드 안쪽에, 모바일에서는 화면 가장자리에 붙습니다. */
+  right: max(16px, calc(50% - 224px));
+  z-index: 150;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+  font-size: 15px;
+  line-height: 1;
+  color: #a8916e;
+  background: rgba(255, 253, 250, 0.85);
+  border: 1px solid #e2d6c0;
+  border-radius: 50%;
+  cursor: pointer;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+
+.bgm-icon {
+  position: relative;
+}
+
+.bgm-toggle.off .bgm-icon::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -6px;
+  right: -6px;
+  border-top: 1px solid currentColor;
+  transform: rotate(-45deg);
 }
 
 /* 토스트 */

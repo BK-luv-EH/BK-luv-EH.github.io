@@ -3,22 +3,29 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title>BK ♥ EH 결혼합니다</title>
-<meta property="og:title" content="BK ♥ EH 결혼합니다" />
-<meta property="og:description" content="2026년 00월 00일, 저희 두 사람 새로운 시작을 함께해주세요." />
+<title>서배규 ♥ 양은희 결혼합니다</title>
+<meta property="og:title" content="서배규 ♥ 양은희 결혼합니다" />
+<meta property="og:description" content="2027년 1월 16일, 저희 두 사람 새로운 시작을 함께해주세요." />
 <meta property="og:image" content="images/cover.jpg" />
 <meta property="og:type" content="website" />
+<link rel="icon" type="image/png" href="favicon/wedding-invitation_3925815.png" />
+<link rel="apple-touch-icon" href="favicon/wedding-invitation_3925815.png" />
 <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
+<audio id="bgm" src="bgm/Ever%20After%20Garden.mp3" loop preload="metadata"></audio>
+<button type="button" class="bgm-toggle off" id="bgmToggle" aria-pressed="false" aria-label="배경음악 켜기">
+  <span class="bgm-icon" aria-hidden="true">♪</span>
+</button>
+
 <div class="wrap">
 
   <!-- 커버 -->
   <section class="section cover">
     <p class="eyebrow">WEDDING INVITATION</p>
-    <h1 class="names">BK <span class="amp">&amp;</span> EH</h1>
-    <p class="date" id="coverDateText">2026. 00. 00. SAT PM 00:00</p>
-    <p class="venue" id="coverVenueText">00웨딩홀 0층 0홀</p>
+    <h1 class="names">서배규 <span class="amp">&amp;</span> 양은희</h1>
+    <p class="date" id="coverDateText">2027. 01. 16. SAT PM 01:20</p>
+    <p class="venue" id="coverVenueText">신도림 웨딩시티 8층 아모르홀</p>
   </section>
 
   <!-- 인사말 -->
@@ -32,15 +39,15 @@
       축복해 주시면 감사하겠습니다.
     </p>
     <div class="family-info">
-      <p><span class="role">신랑</span> 000 · 000 의 아들 <strong>BK</strong></p>
-      <p><span class="role">신부</span> 000 · 000 의 딸 <strong>EH</strong></p>
+      <p><span class="role">신랑</span> 000 · 000 의 아들 <strong>서배규</strong></p>
+      <p><span class="role">신부</span> 000 · 000 의 딸 <strong>양은희</strong></p>
     </div>
   </section>
 
   <!-- 캘린더 -->
   <section class="section calendar-section">
     <p class="section-label">WEDDING DAY</p>
-    <h2 class="calendar-date" id="calendarDateText">2026년 00월 00일 토요일 오후 0시</h2>
+    <h2 class="calendar-date" id="calendarDateText">2027년 1월 16일 토요일 오후 1시 20분</h2>
     <div class="calendar" id="calendar"></div>
     <p class="dday" id="dday"></p>
   </section>
@@ -62,27 +69,29 @@
   <!-- 오시는 길 -->
   <section class="section location-section">
     <p class="section-label">LOCATION</p>
-    <h2 class="venue-name" id="venueNameText">00웨딩홀 0층 0홀</h2>
-    <p class="venue-address" id="venueAddress">서울특별시 00구 00로 00</p>
+    <h2 class="venue-name" id="venueNameText">신도림 웨딩시티 8층 아모르홀</h2>
+    <p class="venue-address" id="venueAddress">서울특별시 구로구 새말로 97 신도림테크노마트 8층 웨딩시티</p>
     <button class="copy-btn" data-copy-target="venueAddress">주소 복사</button>
 
     <div class="map-embed">
-      <!-- 카카오/네이버 지도 iframe 또는 스크립트로 교체하세요 -->
-      <div class="map-placeholder">지도 영역 (지도 API 연동 예정)</div>
+      <div class="map" id="map"></div>
+      <p class="map-placeholder" id="mapFallback" hidden></p>
+      <div class="map-links">
+        <a class="map-link" id="mapLinkKakao" href="#" target="_blank" rel="noopener">카카오맵</a>
+        <a class="map-link" id="mapLinkNaver" href="#" target="_blank" rel="noopener">네이버지도</a>
+      </div>
     </div>
 
     <div class="transport">
       <div class="transport-item">
         <h3>지하철</h3>
-        <p>0호선 00역 0번 출구 도보 0분</p>
+        <p>1 · 2호선 신도림역 3번 출구</p>
+        <p class="transport-note">테크노마트 판매동 지하 1층과 직접 연결됩니다.</p>
       </div>
-      <div class="transport-item">
-        <h3>버스</h3>
-        <p>00번, 00번 · 00정류장 하차</p>
-      </div>
+
       <div class="transport-item">
         <h3>주차</h3>
-        <p>건물 내 주차장 이용 (2시간 무료)</p>
+        <p>테크노마트 지하주차장 (B3 ~ B7)</p>
       </div>
     </div>
   </section>
@@ -99,7 +108,7 @@
       <button class="accordion-toggle">신랑측 마음 전하실 곳 <span class="chevron">▾</span></button>
       <div class="accordion-panel">
         <div class="account-item">
-          <p class="account-role">신랑 BK</p>
+          <p class="account-role">신랑 서배규</p>
           <p class="account-num" id="acc1">000은행 000-0000-0000</p>
           <button class="copy-btn small" data-copy-target="acc1">복사</button>
         </div>
@@ -120,7 +129,7 @@
       <button class="accordion-toggle">신부측 마음 전하실 곳 <span class="chevron">▾</span></button>
       <div class="accordion-panel">
         <div class="account-item">
-          <p class="account-role">신부 EH</p>
+          <p class="account-role">신부 양은희</p>
           <p class="account-num" id="acc4">000은행 000-0000-0000</p>
           <button class="copy-btn small" data-copy-target="acc4">복사</button>
         </div>
@@ -174,7 +183,7 @@
   </section>
 
   <footer class="footer">
-    <p>BK &amp; EH</p>
+    <p>서배규 &amp; 양은희</p>
   </footer>
 
 </div>

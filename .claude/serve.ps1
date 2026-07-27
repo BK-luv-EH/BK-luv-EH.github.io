@@ -18,6 +18,9 @@ $mime = @{
   '.svg'  = 'image/svg+xml'
   '.webp' = 'image/webp'
   '.ico'  = 'image/x-icon'
+  '.mp3'  = 'audio/mpeg'
+  '.m4a'  = 'audio/mp4'
+  '.ogg'  = 'audio/ogg'
   '.woff' = 'font/woff'
   '.woff2' = 'font/woff2'
 }
