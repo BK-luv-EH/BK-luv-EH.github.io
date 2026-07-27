@@ -28,7 +28,18 @@ document.addEventListener('DOMContentLoaded', () => {
   initShare();
   initMap();
   initBgm();
+  initCoverScroll();
 });
+
+function initCoverScroll() {
+  const button = document.getElementById('coverScroll');
+  if (!button) return;
+
+  button.addEventListener('click', () => {
+    const target = document.querySelector('.greeting');
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+}
 
 function renderTexts() {
   const d = CONFIG.weddingDate;

@@ -64,11 +64,55 @@ body {
 .cover-scroll {
   position: absolute;
   left: 50%;
-  bottom: 28px;
-  width: 1px;
-  height: 40px;
-  margin-left: -0.5px;
-  background: linear-gradient(180deg, rgba(74, 66, 56, 0) 0%, rgba(74, 66, 56, 0.5) 100%);
+  bottom: 20px;
+  transform: translateX(-50%);
+  /* 손가락으로 누르기 편한 최소 크기를 확보합니다. */
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  /* 사진 아래쪽 잔디는 중간 톤이라 화살표만으로는 대비가 부족합니다.
+     음악 버튼과 같은 반투명 원을 깔아 어느 사진에서도 보이게 합니다. */
+  background: rgba(255, 253, 250, 0.82);
+  border: 1px solid rgba(226, 214, 192, 0.9);
+  border-radius: 50%;
+  cursor: pointer;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.cover-scroll-arrow {
+  width: 12px;
+  height: 12px;
+  margin-top: -5px;
+  border-right: 1.5px solid #4a4238;
+  border-bottom: 1.5px solid #4a4238;
+  /* 45도 돌린 정사각형의 두 변으로 ∨ 모양을 만듭니다. */
+  transform: rotate(45deg);
+  animation: coverScrollBlink 1.6s ease-in-out infinite;
+}
+
+@keyframes coverScrollBlink {
+  0%,
+  100% {
+    opacity: 0.2;
+    /* 회전된 좌표계라 (3px, 3px)가 화면상 아래쪽 이동이 됩니다. */
+    transform: rotate(45deg) translate(0, 0);
+  }
+  50% {
+    opacity: 1;
+    transform: rotate(45deg) translate(3px, 3px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cover-scroll-arrow {
+    animation: none;
+    opacity: 0.8;
+  }
 }
 
 .eyebrow {
