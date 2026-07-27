@@ -121,10 +121,15 @@ body {
 
 .names {
   font-family: 'Nanum Myeongjo', serif;
-  font-size: 42px;
+  /* 42px 고정이면 412px 미만 화면에서 이름이 다음 줄로 넘어갑니다.
+     화면 폭에 맞춰 줄이되, 카드가 480px에서 멈추므로 42px을 상한으로 둡니다.
+     계수는 '&'의 좌우 마진 16px까지 포함해 잡은 값입니다. */
+  font-size: min(42px, 9.8vw);
   font-weight: 400;
   letter-spacing: 2px;
   margin-bottom: 24px;
+  /* 줄이 넘어가더라도 이름이 '양은 / 희'처럼 쪼개지지 않게 합니다. */
+  word-break: keep-all;
 }
 
 .names .amp {
