@@ -41,9 +41,34 @@ body {
 
 /* 커버 */
 .cover {
-  padding: 120px 32px;
-  background: linear-gradient(180deg, #f7f2ea 0%, #efe6d8 100%);
-  border-bottom: none;
+  position: relative;
+  /* 첫 화면을 사진으로 가득 채웁니다. dvh는 모바일 주소창을 감안한 실제 높이입니다. */
+  height: 100vh;
+  height: 100dvh;
+  padding: 56px 32px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background-image: url('../images/main.jpg');
+  background-size: cover;
+  background-position: center;
+  background-color: #cfe2ea;
+}
+
+.cover-text {
+  /* 인물이 사진 아래쪽에 있어 글씨는 하늘 부분에 올립니다. */
+  width: 100%;
+}
+
+.cover-scroll {
+  position: absolute;
+  left: 50%;
+  bottom: 28px;
+  width: 1px;
+  height: 40px;
+  margin-left: -0.5px;
+  background: linear-gradient(180deg, rgba(74, 66, 56, 0) 0%, rgba(74, 66, 56, 0.5) 100%);
 }
 
 .eyebrow {
@@ -67,16 +92,29 @@ body {
   margin: 0 8px;
 }
 
+/* 사진 위에 올라가므로 크림색 배경일 때보다 진하게 씁니다. */
+.cover .eyebrow {
+  color: #35312b;
+}
+
+.cover .names {
+  color: #33302b;
+}
+
+.cover .amp {
+  color: #8c7355;
+}
+
 .cover .date {
   font-size: 15px;
   letter-spacing: 1px;
   margin-bottom: 8px;
-  color: #6b6155;
+  color: #3f3a33;
 }
 
 .cover .venue {
   font-size: 14px;
-  color: #8a7d6a;
+  color: #4a443c;
 }
 
 /* 인사말 */
