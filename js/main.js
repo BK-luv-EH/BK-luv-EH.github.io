@@ -29,7 +29,26 @@ document.addEventListener('DOMContentLoaded', () => {
   initMap();
   initBgm();
   initCoverScroll();
+  initToTop();
 });
+
+function initToTop() {
+  const button = document.getElementById('toTop');
+  if (!button) return;
+
+  // 첫 화면을 지나 스크롤했을 때만 보여줍니다.
+  const update = () => {
+    button.classList.toggle('show', window.scrollY > window.innerHeight * 0.6);
+  };
+
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+
+  button.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+}
 
 function initCoverScroll() {
   const button = document.getElementById('coverScroll');
