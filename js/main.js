@@ -67,7 +67,11 @@ function initLightbox(gallery) {
   const track = document.getElementById('lightboxTrack');
   if (!box || !track) return;
 
-  const sources = Array.from(gallery.querySelectorAll('.gallery-item')).map((img) => img.getAttribute('src'));
+  // 격자에는 가벼운 썸네일(images/gallery/thumb/)을 쓰고,
+  // 크게 볼 때만 같은 이름의 고화질 원본(images/gallery/)을 불러옵니다.
+  const sources = Array.from(gallery.querySelectorAll('.gallery-item')).map((img) =>
+    img.getAttribute('src').replace('/gallery/thumb/', '/gallery/')
+  );
   if (!sources.length) return;
 
   const countEl = document.getElementById('lightboxCount');
