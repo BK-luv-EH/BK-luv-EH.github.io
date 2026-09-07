@@ -26,7 +26,175 @@ document.addEventListener('DOMContentLoaded', () => {
   initBgm();
   initCoverScroll();
   initToTop();
+  initGallery();
 });
+
+function initGallery() {
+  const button = document.getElementById('galleryMore');
+  const gallery = document.getElementById('gallery');
+  if (!button || !gallery) return;
+
+  const hidden = gallery.querySelectorAll('.gallery-item.is-hidden');
+  if (!hidden.length) {
+    button.hidden = true;
+    return;
+  }
+
+  let expanded = false;
+  const total = gallery.querySelectorAll('.gallery-item').length;
+
+  const render = () => {
+    hidden.forEach((item) => item.classList.toggle('is-hidden', !expanded));
+    button.textContent = expanded ? '사진 접기' : `사진 더보기 (${total}장)`;
+    button.setAttribute('aria-expanded', String(expanded));
+  };
+
+  button.addEventListener('click', () => {
+    expanded = !expanded;
+    render();
+    // 접을 때는 갤러리 윗부분이 화면 밖으로 밀려나므로 되돌려줍니다.
+    if (!expanded) gallery.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  render();
+  initLightbox(gallery);
+}
+
+/* ---------- 갤러리 크게 보기 ---------- */
+
+function initLightbox(gallery) {
+  const box = document.getElementById('lightbox');
+  const track = document.getElementById('lightboxTrack');
+  if (!box || !track) return;
+
+  const sources = Array.from(gallery.querySelectorAll('.gallery-item')).map((img) => img.getAttribute('src'));
+  if (!sources.length) return;
+
+  const countEl = document.getElementById('lightboxCount');
+  const prevBtn = document.getElementById('lightboxPrev');
+  const nextBtn = document.getElementById('lightboxNext');
+  let index = 0;
+
+  const slides = sources.map(() => {
+    const slide = document.createElement('div');
+    slide.className = 'lightbox-slide';
+    slide.appendChild(document.createElement('img'));
+    track.appendChild(slide);
+    return slide;
+  });
+
+  // 26장을 한꺼번에 받지 않도록 현재 사진과 좌우 한 장만 불러옵니다.
+  const loadNear = () => {
+    [index - 1, index, index + 1].forEach((i) => {
+      if (i < 0 || i >= slides.length) return;
+      const img = slides[i].firstChild;
+      if (!img.getAttribute('src')) img.setAttribute('src', sources[i]);
+    });
+  };
+
+  const setOffset = (px, animate) => {
+    track.classList.toggle('is-animating', !!animate);
+    track.style.transform = `translateX(${-index * box.clientWidth + px}px)`;
+  };
+
+  const render = (animate) => {
+    setOffset(0, animate);
+    countEl.textContent = `${index + 1} / ${slides.length}`;
+    prevBtn.disabled = index === 0;
+    nextBtn.disabled = index === slides.length - 1;
+    loadNear();
+  };
+
+  const go = (next) => {
+    index = Math.max(0, Math.min(slides.length - 1, next));
+    render(true);
+  };
+
+  const open = (start) => {
+    index = start;
+    box.hidden = false;
+    document.body.style.overflow = 'hidden';
+    render(false);
+  };
+
+  const close = () => {
+    box.hidden = true;
+    document.body.style.overflow = '';
+  };
+
+  gallery.querySelectorAll('.gallery-item').forEach((img, i) => {
+    img.addEventListener('click', () => open(i));
+  });
+
+  prevBtn.addEventListener('click', () => go(index - 1));
+  nextBtn.addEventListener('click', () => go(index + 1));
+  document.getElementById('lightboxClose').addEventListener('click', close);
+  box.querySelectorAll('[data-lightbox-close]').forEach((el) => el.addEventListener('click', close));
+
+  document.addEventListener('keydown', (e) => {
+    if (box.hidden) return;
+    if (e.key === 'Escape') close();
+    if (e.key === 'ArrowLeft') go(index - 1);
+    if (e.key === 'ArrowRight') go(index + 1);
+  });
+
+  // 손가락으로 밀어서 넘기기
+  let startX = 0;
+  let startY = 0;
+  let dragging = false;
+  let horizontal = null;
+
+  track.addEventListener(
+    'touchstart',
+    (e) => {
+      if (e.touches.length !== 1) return;
+      dragging = true;
+      horizontal = null;
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+    },
+    { passive: true }
+  );
+
+  track.addEventListener(
+    'touchmove',
+    (e) => {
+      if (!dragging) return;
+      const dx = e.touches[0].clientX - startX;
+      const dy = e.touches[0].clientY - startY;
+
+      // 첫 움직임의 방향으로 가로/세로 제스처를 판별합니다.
+      if (horizontal === null) {
+        if (Math.abs(dx) < 6 && Math.abs(dy) < 6) return;
+        horizontal = Math.abs(dx) > Math.abs(dy);
+      }
+      if (!horizontal) return;
+
+      // 양 끝에서는 저항을 주어 더 끌리지 않게 합니다.
+      const atEdge = (index === 0 && dx > 0) || (index === slides.length - 1 && dx < 0);
+      setOffset(atEdge ? dx * 0.25 : dx, false);
+    },
+    { passive: true }
+  );
+
+  const endDrag = (e) => {
+    if (!dragging) return;
+    dragging = false;
+    if (!horizontal) return;
+    const dx = (e.changedTouches ? e.changedTouches[0].clientX : startX) - startX;
+    const threshold = Math.min(80, box.clientWidth * 0.2);
+    if (dx <= -threshold) go(index + 1);
+    else if (dx >= threshold) go(index - 1);
+    else render(true);
+  };
+
+  track.addEventListener('touchend', endDrag);
+  track.addEventListener('touchcancel', endDrag);
+
+  window.addEventListener('resize', () => {
+    if (!box.hidden) render(false);
+  });
+}
 
 function initToTop() {
   const button = document.getElementById('toTop');
