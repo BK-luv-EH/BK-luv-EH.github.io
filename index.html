@@ -29,12 +29,8 @@
 
   <!-- 커버 -->
   <section class="cover">
-    <div class="cover-text">
-      <p class="eyebrow">WEDDING INVITATION</p>
-      <h1 class="names">서배규 <span class="amp">&amp;</span> 양은희</h1>
-      <p class="date" id="coverDateText">2027. 01. 16. SAT PM 01:20</p>
-      <p class="venue" id="coverVenueText">신도림 웨딩시티 8층 아모르홀</p>
-    </div>
+    <!-- 이름·날짜·장소가 main.jpg 안에 이미 그려져 있어 겹치므로 텍스트는 뺀 상태입니다.
+         되살리려면 .cover-text 블록을 다시 넣으면 됩니다 (CSS는 그대로 두었습니다). -->
     <button type="button" class="cover-scroll" id="coverScroll" aria-label="아래 내용 보기">
       <span class="cover-scroll-arrow" aria-hidden="true"></span>
     </button>
@@ -68,14 +64,34 @@
   <section class="section gallery-section">
     <p class="section-label">GALLERY</p>
     <div class="gallery" id="gallery">
-      <!-- images/gallery/1.jpg ~ 6.jpg 를 넣어주세요 -->
-      <div class="gallery-item placeholder">1</div>
-      <div class="gallery-item placeholder">2</div>
-      <div class="gallery-item placeholder">3</div>
-      <div class="gallery-item placeholder">4</div>
-      <div class="gallery-item placeholder">5</div>
-      <div class="gallery-item placeholder">6</div>
+      <img class="gallery-item" src="images/gallery/1.jpg" alt="" loading="lazy" decoding="async" />
+      <img class="gallery-item" src="images/gallery/2.jpg" alt="" loading="lazy" decoding="async" />
+      <img class="gallery-item" src="images/gallery/3.jpg" alt="" loading="lazy" decoding="async" />
+      <img class="gallery-item" src="images/gallery/n-1.jpg" alt="" loading="lazy" decoding="async" />
+      <img class="gallery-item" src="images/gallery/n-2.jpg" alt="" loading="lazy" decoding="async" />
+      <img class="gallery-item" src="images/gallery/n-3.jpg" alt="" loading="lazy" decoding="async" />
+      <img class="gallery-item is-hidden" src="images/gallery/4.jpg" alt="" loading="lazy" decoding="async" />
+      <img class="gallery-item is-hidden" src="images/gallery/5.jpg" alt="" loading="lazy" decoding="async" />
+      <img class="gallery-item is-hidden" src="images/gallery/6.jpg" alt="" loading="lazy" decoding="async" />
+      <img class="gallery-item is-hidden" src="images/gallery/7.jpg" alt="" loading="lazy" decoding="async" />
+      <img class="gallery-item is-hidden" src="images/gallery/8.jpg" alt="" loading="lazy" decoding="async" />
+      <img class="gallery-item is-hidden" src="images/gallery/9.jpg" alt="" loading="lazy" decoding="async" />
+      <img class="gallery-item is-hidden" src="images/gallery/10.jpg" alt="" loading="lazy" decoding="async" />
+      <img class="gallery-item is-hidden" src="images/gallery/11.jpg" alt="" loading="lazy" decoding="async" />
+      <img class="gallery-item is-hidden" src="images/gallery/12.jpg" alt="" loading="lazy" decoding="async" />
+      <img class="gallery-item is-hidden" src="images/gallery/n-4.jpg" alt="" loading="lazy" decoding="async" />
+      <img class="gallery-item is-hidden" src="images/gallery/n-5.jpg" alt="" loading="lazy" decoding="async" />
+      <img class="gallery-item is-hidden" src="images/gallery/n-6.jpg" alt="" loading="lazy" decoding="async" />
+      <img class="gallery-item is-hidden" src="images/gallery/n-7.jpg" alt="" loading="lazy" decoding="async" />
+      <img class="gallery-item is-hidden" src="images/gallery/n-8.jpg" alt="" loading="lazy" decoding="async" />
+      <img class="gallery-item is-hidden" src="images/gallery/n-9.jpg" alt="" loading="lazy" decoding="async" />
+      <img class="gallery-item is-hidden" src="images/gallery/n-10.jpg" alt="" loading="lazy" decoding="async" />
+      <img class="gallery-item is-hidden" src="images/gallery/n-11.jpg" alt="" loading="lazy" decoding="async" />
+      <img class="gallery-item is-hidden" src="images/gallery/n-12.jpg" alt="" loading="lazy" decoding="async" />
+      <img class="gallery-item is-hidden" src="images/gallery/n-13.jpg" alt="" loading="lazy" decoding="async" />
+      <img class="gallery-item is-hidden" src="images/gallery/n-14.jpg" alt="" loading="lazy" decoding="async" />
     </div>
+    <button type="button" class="gallery-more" id="galleryMore"></button>
   </section>
 
   <!-- 오시는 길 -->

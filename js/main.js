@@ -26,7 +26,38 @@ document.addEventListener('DOMContentLoaded', () => {
   initBgm();
   initCoverScroll();
   initToTop();
+  initGallery();
 });
+
+function initGallery() {
+  const button = document.getElementById('galleryMore');
+  const gallery = document.getElementById('gallery');
+  if (!button || !gallery) return;
+
+  const hidden = gallery.querySelectorAll('.gallery-item.is-hidden');
+  if (!hidden.length) {
+    button.hidden = true;
+    return;
+  }
+
+  let expanded = false;
+  const total = gallery.querySelectorAll('.gallery-item').length;
+
+  const render = () => {
+    hidden.forEach((item) => item.classList.toggle('is-hidden', !expanded));
+    button.textContent = expanded ? '사진 접기' : `사진 더보기 (${total}장)`;
+    button.setAttribute('aria-expanded', String(expanded));
+  };
+
+  button.addEventListener('click', () => {
+    expanded = !expanded;
+    render();
+    // 접을 때는 갤러리 윗부분이 화면 밖으로 밀려나므로 되돌려줍니다.
+    if (!expanded) gallery.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  render();
+}
 
 function initToTop() {
   const button = document.getElementById('toTop');

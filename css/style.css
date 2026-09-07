@@ -51,9 +51,13 @@ body {
   align-items: center;
   text-align: center;
   background-image: url('../images/main.jpg');
-  background-size: cover;
-  background-position: center;
-  background-color: #cfe2ea;
+  /* cover로 채우면 폰의 좁은 화면에서 좌우가 잘리는데, 사진에 그려진 'wedding day'
+     글자가 오른쪽 끝까지 닿아 있어 잘리면 글자가 깨집니다.
+     가로를 꽉 채우고 아래에 붙인 뒤, 위 여백은 사진 맨 윗줄 색으로 이어붙입니다. */
+  background-size: 100% auto;
+  background-position: center bottom;
+  background-repeat: no-repeat;
+  background-color: #08161b;
 }
 
 .cover-text {
@@ -64,7 +68,8 @@ body {
 .cover-scroll {
   position: absolute;
   left: 50%;
-  bottom: 20px;
+  /* 사진 아래쪽에 날짜가 인쇄되어 있어 그보다 위에 둡니다. */
+  bottom: 56px;
   transform: translateX(-50%);
   /* 손가락으로 누르기 편한 최소 크기를 확보합니다. */
   width: 44px;
@@ -242,19 +247,29 @@ body {
 }
 
 .gallery-item {
+  display: block;
+  width: 100%;
   aspect-ratio: 1 / 1;
-  background-size: cover;
-  background-position: center;
-  cursor: pointer;
+  /* 세로·가로 사진이 섞여 있어 정사각 칸에 맞춰 잘라 넣습니다. */
+  object-fit: cover;
+  background: #e8e0d2;
 }
 
-.gallery-item.placeholder {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #e8e0d2;
-  color: #b9a98f;
-  font-size: 20px;
+.gallery-item.is-hidden {
+  display: none;
+}
+
+.gallery-more {
+  font-family: inherit;
+  width: 100%;
+  margin-top: 16px;
+  background: none;
+  border: 1px solid #d8c9ac;
+  color: #a8916e;
+  font-size: 13px;
+  padding: 12px 0;
+  border-radius: 22px;
+  cursor: pointer;
 }
 
 /* 오시는 길 */
