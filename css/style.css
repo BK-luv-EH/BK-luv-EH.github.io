@@ -676,9 +676,10 @@ body {
   cursor: pointer;
 }
 
-.share-btn.kakao {
-  background: #fee500;
-  color: #3c1e1e;
+/* 방명록 '남기기' 버튼과 같은 색을 씁니다. */
+.share-btn.primary {
+  background: #c9ab7d;
+  color: #fff;
 }
 
 .share-btn.link {

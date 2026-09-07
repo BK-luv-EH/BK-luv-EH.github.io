@@ -375,9 +375,9 @@ function initShare() {
     });
   }
 
-  const kakaoBtn = document.getElementById('shareKakao');
-  if (kakaoBtn) {
-    kakaoBtn.addEventListener('click', async () => {
+  const shareBtn = document.getElementById('shareSheet');
+  if (shareBtn) {
+    shareBtn.addEventListener('click', async () => {
       const url = shareUrl();
 
       // 공유 시트가 없는 환경(주로 PC 브라우저)에서는 링크 복사로 대체합니다.
