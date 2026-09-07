@@ -169,6 +169,30 @@ body {
 }
 
 /* 인사말 */
+.greeting-dialogue {
+  margin-bottom: 36px;
+}
+
+.greeting-dialogue p {
+  font-size: 15px;
+  line-height: 1.9;
+  color: #5c5346;
+  /* 한글이 단어 중간에서 끊기지 않게 합니다. */
+  word-break: keep-all;
+}
+
+.greeting-dialogue p + p {
+  margin-top: 20px;
+}
+
+.greeting-dialogue .speaker {
+  display: block;
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: #a8916e;
+  margin-bottom: 4px;
+}
+
 .greeting-text {
   font-size: 16px;
   line-height: 2;
