@@ -259,6 +259,133 @@ body {
   display: none;
 }
 
+.gallery-item {
+  cursor: pointer;
+}
+
+/* 갤러리 크게 보기 */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  overflow: hidden;
+  background: #14110e;
+  touch-action: none;
+}
+
+.lightbox[hidden] {
+  display: none;
+}
+
+.lightbox-backdrop {
+  position: absolute;
+  inset: 0;
+}
+
+.lightbox-track {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  will-change: transform;
+}
+
+.lightbox-track.is-animating {
+  transition: transform 0.28s ease;
+}
+
+.lightbox-slide {
+  flex: 0 0 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 56px 12px 64px;
+}
+
+.lightbox-slide img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  /* 드래그로 넘길 때 브라우저 기본 이미지 끌기가 방해하지 않도록 */
+  -webkit-user-drag: none;
+  user-select: none;
+  pointer-events: none;
+}
+
+.lightbox-close,
+.lightbox-nav {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: rgba(255, 253, 250, 0.14);
+  border: none;
+  border-radius: 50%;
+  color: #fffdfa;
+  cursor: pointer;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.lightbox-close {
+  top: 12px;
+  right: 12px;
+  width: 40px;
+  height: 40px;
+  font-size: 24px;
+  line-height: 1;
+}
+
+.lightbox-nav {
+  top: 50%;
+  width: 40px;
+  height: 40px;
+  margin-top: -20px;
+}
+
+.lightbox-nav.prev {
+  left: 10px;
+}
+
+.lightbox-nav.next {
+  right: 10px;
+}
+
+.lightbox-nav:disabled {
+  opacity: 0.25;
+  cursor: default;
+}
+
+.lightbox-arrow {
+  width: 11px;
+  height: 11px;
+  border-top: 1.5px solid currentColor;
+  border-right: 1.5px solid currentColor;
+}
+
+.lightbox-nav.prev .lightbox-arrow {
+  transform: rotate(-135deg);
+  margin-left: 4px;
+}
+
+.lightbox-nav.next .lightbox-arrow {
+  transform: rotate(45deg);
+  margin-right: 4px;
+}
+
+.lightbox-count {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 22px;
+  text-align: center;
+  font-size: 13px;
+  letter-spacing: 1px;
+  color: rgba(255, 253, 250, 0.75);
+}
+
 .gallery-more {
   font-family: inherit;
   width: 100%;
