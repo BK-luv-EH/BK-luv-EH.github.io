@@ -8,6 +8,9 @@ const CONFIG = {
   weddingDate: new Date(2027, 0, 16, 13, 20), // 2027-01-16 13:20
   venueName: '신도림 웨딩시티 8층 아모르홀',
   venueAddress: '서울특별시 구로구 새말로 97 신도림테크노마트 8층 웨딩시티',
+  // 주소가 길어 화면에서는 두 줄로 나눕니다. 이 낱말 앞에서 줄을 바꿉니다.
+  // 복사·지도 검색에는 위의 한 줄짜리 원본이 그대로 쓰입니다.
+  venueAddressBreakBefore: '신도림테크노마트',
   // 카카오 개발자센터에서 발급받은 JavaScript 키. 비워두면 지도 대신 안내 문구가 표시됩니다.
   kakaoMapKey: 'ef5c92b80f52634d05d1e5abf4752244',
   // 카카오톡 공유도 같은 JavaScript 키를 씁니다.
@@ -260,7 +263,25 @@ function renderTexts() {
   if (venueNameText) venueNameText.textContent = CONFIG.venueName;
 
   const venueAddress = document.getElementById('venueAddress');
-  if (venueAddress) venueAddress.textContent = CONFIG.venueAddress;
+  if (venueAddress) renderVenueAddress(venueAddress);
+}
+
+function renderVenueAddress(el) {
+  // 복사 버튼은 줄바꿈이 섞이지 않도록 한 줄짜리 원본을 쓰게 합니다.
+  el.dataset.copyValue = CONFIG.venueAddress;
+  el.textContent = '';
+
+  const at = CONFIG.venueAddress.indexOf(CONFIG.venueAddressBreakBefore);
+  if (!CONFIG.venueAddressBreakBefore || at <= 0) {
+    el.textContent = CONFIG.venueAddress;
+    return;
+  }
+
+  el.append(
+    CONFIG.venueAddress.slice(0, at).trim(),
+    document.createElement('br'),
+    CONFIG.venueAddress.slice(at)
+  );
 }
 
 function pad(n) {
@@ -478,7 +499,8 @@ function initCopyButtons() {
       const targetId = btn.getAttribute('data-copy-target');
       const targetEl = document.getElementById(targetId);
       if (!targetEl) return;
-      copyText(targetEl.textContent.trim());
+      // 화면에서 줄을 나눠 보여주는 값은 data-copy-value에 원본이 들어 있습니다.
+      copyText(targetEl.dataset.copyValue || targetEl.textContent.trim());
     });
   });
 }
