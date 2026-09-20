@@ -1,0 +1,538 @@
+/* ================================================================
+   팩맨 테마
+
+   style.css 위에 얹어 색·글꼴·테두리만 바꿉니다. 레이아웃(그리드,
+   플렉스, 여백)은 그대로 두므로, index.html에서 이 파일 <link> 한 줄만
+   빼면 원래 청첩장으로 돌아갑니다.
+
+   한글 픽셀 글꼴은 Galmuri (OFL-1.1). 14px 설계라 14의 배수로 써야
+   글자가 또렷합니다.
+   ================================================================ */
+
+:root {
+  --pm-bg: #05050a;
+  --pm-panel: #0a0a14;
+  --pm-maze: #3b3bff;
+  --pm-maze-dim: #1e1e6e;
+  --pm-yellow: #ffd400;
+  --pm-pellet: #ffe9b0;
+  --pm-red: #ff3a3a;
+  --pm-pink: #ffb8ff;
+  --pm-cyan: #22e0ff;
+  --pm-orange: #ffb851;
+  --pm-text: #e8e8f4;
+  --pm-dim: #9298c2;
+}
+
+html,
+body {
+  background: var(--pm-bg);
+}
+
+body {
+  font-family: Galmuri14, 'Apple SD Gothic Neo', sans-serif;
+  color: var(--pm-text);
+  line-height: 1.9;
+  /* 픽셀 글꼴이 흐려지지 않게 합니다. */
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+}
+
+.wrap {
+  background: var(--pm-panel);
+  box-shadow: 0 0 0 2px var(--pm-maze), 0 0 40px rgba(59, 59, 255, 0.35);
+}
+
+/* 섹션 사이를 미로의 먹이(펠릿) 줄로 나눕니다. */
+.section {
+  position: relative;
+  border-bottom: none;
+  font-size: 14px;
+}
+
+.section + .section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 24px;
+  right: 24px;
+  height: 4px;
+  background-image: radial-gradient(circle, var(--pm-pellet) 1.6px, transparent 2px);
+  background-size: 16px 4px;
+  background-repeat: repeat-x;
+  opacity: 0.5;
+}
+
+/* ---------- 섹션 제목 ---------- */
+
+.section-label {
+  font-family: 'Press Start 2P', Galmuri14, monospace;
+  font-size: 11px;
+  letter-spacing: 2px;
+  line-height: 1.8;
+  color: var(--pm-yellow);
+  margin-bottom: 20px;
+}
+
+/* 한글 제목은 픽셀 한글 글꼴로 */
+.section-label.ko {
+  font-family: Galmuri14, sans-serif;
+  font-size: 14px;
+  letter-spacing: 2px;
+}
+
+/* 제목 옆에 유령을 하나 세워둡니다. */
+.section-label::after {
+  content: '';
+  display: inline-block;
+  width: 10px;
+  height: 11px;
+  margin-left: 10px;
+  vertical-align: -1px;
+  background: var(--pm-pink);
+  border-radius: 5px 5px 0 0;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 83% 82%, 66% 100%, 50% 82%, 33% 100%, 16% 82%, 0 100%);
+}
+
+.calendar-section .section-label::after { background: var(--pm-red); }
+.gallery-section .section-label::after { background: var(--pm-cyan); }
+.location-section .section-label::after { background: var(--pm-orange); }
+.account-section .section-label::after { background: var(--pm-pink); }
+.guestbook-section .section-label::after { background: var(--pm-cyan); }
+.share-section .section-label::after { background: var(--pm-red); }
+
+/* ---------- 커버 ---------- */
+
+/* 배경색은 style.css의 #08161b를 그대로 둡니다. 사진 맨 윗줄 색이라
+   순검정으로 바꾸면 사진과 만나는 자리에 이음새가 드러납니다. */
+.cover {
+  box-shadow: inset 0 0 0 2px var(--pm-maze-dim);
+}
+
+/* 스크롤 유도 화살표 자리에 팩맨을 놓고 먹이를 먹게 합니다. */
+.cover-scroll-arrow {
+  width: 22px;
+  height: 22px;
+  margin-top: 0;
+  border: none;
+  background: var(--pm-yellow);
+  border-radius: 50%;
+  transform: rotate(90deg);
+  filter: drop-shadow(0 0 6px rgba(255, 212, 0, 0.6));
+  animation: pm-chomp 0.5s steps(1, end) infinite;
+}
+
+@keyframes pm-chomp {
+  0%,
+  49% {
+    clip-path: polygon(50% 50%, 100% 22%, 100% 0, 0 0, 0 100%, 100% 100%, 100% 78%);
+  }
+  50%,
+  100% {
+    clip-path: polygon(50% 50%, 100% 48%, 100% 0, 0 0, 0 100%, 100% 100%, 100% 52%);
+  }
+}
+
+.cover-scroll::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -14px;
+  width: 64px;
+  height: 4px;
+  margin-left: -32px;
+  background-image: radial-gradient(circle, var(--pm-pellet) 1.6px, transparent 2px);
+  background-size: 16px 4px;
+}
+
+/* ---------- 인사말 ---------- */
+
+.greeting-dialogue p {
+  color: var(--pm-text);
+  font-size: 14px;
+}
+
+.greeting-dialogue .speaker {
+  font-family: 'Press Start 2P', Galmuri14, monospace;
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--pm-cyan);
+}
+
+.greeting-text {
+  color: var(--pm-text);
+  font-size: 14px;
+  line-height: 2.2;
+}
+
+.family-info p {
+  color: var(--pm-dim);
+  font-size: 14px;
+}
+
+.family-info .role {
+  color: var(--pm-yellow);
+  width: auto;
+  margin-right: 8px;
+}
+
+.family-info strong {
+  color: var(--pm-text);
+}
+
+/* ---------- 캘린더 ---------- */
+
+.calendar-date {
+  font-size: 14px;
+  color: var(--pm-text);
+  letter-spacing: 1px;
+}
+
+.calendar th {
+  font-family: 'Press Start 2P', Galmuri14, monospace;
+  font-size: 9px;
+  /* 미로 파랑(--pm-maze)은 테두리엔 좋지만 검정 위 글자로는 너무 어둡습니다. */
+  color: #9a9aff;
+}
+
+.calendar td {
+  font-size: 14px;
+  color: var(--pm-dim);
+}
+
+/* 예식일은 팩맨이 앉아 있는 칸 */
+.calendar td.highlight span {
+  background: var(--pm-yellow);
+  color: #000;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-weight: 700;
+  box-shadow: 0 0 10px rgba(255, 212, 0, 0.55);
+}
+
+.dday {
+  font-family: Galmuri14, sans-serif;
+  font-size: 14px;
+  color: var(--pm-yellow);
+  letter-spacing: 0;
+  text-shadow: 0 0 10px rgba(255, 212, 0, 0.35);
+}
+
+/* ---------- 갤러리 ---------- */
+
+.gallery {
+  gap: 6px;
+}
+
+.gallery-item {
+  background: #11111f;
+  box-shadow: 0 0 0 1px var(--pm-maze-dim);
+}
+
+.gallery-more,
+.gb-more {
+  font-family: Galmuri14, sans-serif;
+  font-size: 14px;
+  color: var(--pm-yellow);
+  background: none;
+  border: 2px solid var(--pm-maze);
+  border-radius: 0;
+}
+
+/* ---------- 오시는 길 ---------- */
+
+.venue-name {
+  font-size: 14px;
+  color: var(--pm-text);
+  letter-spacing: 1px;
+}
+
+.venue-address {
+  font-size: 14px;
+  color: var(--pm-dim);
+}
+
+.map {
+  box-shadow: 0 0 0 2px var(--pm-maze);
+  background: #11111f;
+}
+
+.map-placeholder {
+  background: #11111f;
+  color: var(--pm-dim);
+  border-radius: 0;
+  box-shadow: 0 0 0 2px var(--pm-maze);
+}
+
+.map-link {
+  font-family: Galmuri14, sans-serif;
+  font-size: 14px;
+  color: var(--pm-cyan);
+  border: 2px solid var(--pm-maze);
+  border-radius: 0;
+}
+
+.transport-item {
+  border-top: 2px solid var(--pm-maze-dim);
+}
+
+.transport-item h3 {
+  font-family: 'Press Start 2P', Galmuri14, monospace;
+  font-size: 9px;
+  letter-spacing: 1px;
+  color: var(--pm-yellow);
+}
+
+.transport-item p {
+  font-size: 14px;
+  color: var(--pm-text);
+}
+
+.transport-note {
+  font-size: 14px;
+  color: var(--pm-dim);
+}
+
+/* ---------- 버튼 ---------- */
+
+.copy-btn {
+  font-family: Galmuri14, sans-serif;
+  font-size: 14px;
+  color: var(--pm-yellow);
+  background: transparent;
+  border: 2px solid var(--pm-maze);
+  border-radius: 0;
+}
+
+.copy-btn.small {
+  font-size: 14px;
+  padding: 4px 10px;
+}
+
+/* ---------- 마음 전하실 곳 ---------- */
+
+.accordion,
+.accordion:last-child {
+  border-top: 2px solid var(--pm-maze-dim);
+  border-bottom: none;
+}
+
+.accordion-toggle {
+  font-family: Galmuri14, sans-serif;
+  font-size: 14px;
+  color: var(--pm-text);
+}
+
+.chevron {
+  color: var(--pm-yellow);
+}
+
+.account-role {
+  font-size: 14px;
+  color: var(--pm-cyan);
+}
+
+.account-num {
+  font-size: 14px;
+  color: var(--pm-text);
+}
+
+.account-num .bank {
+  color: var(--pm-dim);
+}
+
+/* ---------- 방명록 ---------- */
+
+.guestbook-desc,
+.share-desc {
+  font-size: 14px;
+  color: var(--pm-dim);
+}
+
+.guestbook-form input,
+.guestbook-form textarea,
+.gb-modal-box input {
+  font-family: Galmuri14, sans-serif;
+  font-size: 14px;
+  color: var(--pm-text);
+  background: #11111f;
+  border: 2px solid var(--pm-maze-dim);
+  border-radius: 0;
+}
+
+.guestbook-form input::placeholder,
+.guestbook-form textarea::placeholder,
+.gb-modal-box input::placeholder {
+  color: #5c6088;
+}
+
+.guestbook-form input:focus,
+.guestbook-form textarea:focus,
+.gb-modal-box input:focus {
+  border-color: var(--pm-maze);
+}
+
+.gb-counter {
+  font-family: 'Press Start 2P', Galmuri14, monospace;
+  font-size: 9px;
+  color: var(--pm-dim);
+}
+
+.gb-submit,
+.share-btn.primary {
+  font-family: Galmuri14, sans-serif;
+  font-size: 14px;
+  background: var(--pm-yellow);
+  color: #000;
+  border-radius: 0;
+  font-weight: 700;
+}
+
+.gb-status,
+.gb-empty {
+  font-size: 14px;
+  color: var(--pm-dim);
+  border-top: 2px solid var(--pm-maze-dim);
+}
+
+.gb-item {
+  border-top: 2px solid var(--pm-maze-dim);
+}
+
+.gb-item-name {
+  font-size: 14px;
+  color: var(--pm-cyan);
+}
+
+.gb-item-date {
+  font-family: 'Press Start 2P', Galmuri14, monospace;
+  font-size: 9px;
+  color: var(--pm-dim);
+}
+
+.gb-item-delete {
+  color: var(--pm-red);
+}
+
+.gb-item-message {
+  font-size: 14px;
+  color: var(--pm-text);
+}
+
+.gb-modal-backdrop {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.gb-modal-box {
+  background: var(--pm-panel);
+  border-radius: 0;
+  box-shadow: 0 0 0 2px var(--pm-maze);
+}
+
+.gb-modal-title {
+  font-size: 14px;
+  color: var(--pm-yellow);
+}
+
+.gb-modal-desc {
+  font-size: 14px;
+  color: var(--pm-dim);
+}
+
+.gb-modal-btn {
+  font-family: Galmuri14, sans-serif;
+  font-size: 14px;
+  background: transparent;
+  color: var(--pm-dim);
+  border: 2px solid var(--pm-maze-dim);
+  border-radius: 0;
+}
+
+.gb-modal-btn.danger {
+  background: var(--pm-red);
+  border-color: var(--pm-red);
+  color: #fff;
+}
+
+/* ---------- 공유 ---------- */
+
+.share-btn {
+  font-family: Galmuri14, sans-serif;
+  font-size: 14px;
+  border-radius: 0;
+}
+
+.share-btn.link {
+  background: transparent;
+  color: var(--pm-cyan);
+  border: 2px solid var(--pm-maze);
+}
+
+/* ---------- 떠 있는 버튼들 ---------- */
+
+.bgm-toggle,
+.to-top {
+  background: rgba(10, 10, 20, 0.85);
+  border: 2px solid var(--pm-maze);
+  border-radius: 0;
+  color: var(--pm-yellow);
+}
+
+.to-top-arrow {
+  border-left-color: var(--pm-yellow);
+  border-top-color: var(--pm-yellow);
+}
+
+.bgm-toggle.off .bgm-icon::after {
+  border-top-color: var(--pm-yellow);
+}
+
+/* ---------- 크게 보기 ---------- */
+
+.lightbox {
+  background: #000;
+}
+
+.lightbox-close,
+.lightbox-nav {
+  background: rgba(59, 59, 255, 0.25);
+  border: 2px solid var(--pm-maze);
+  border-radius: 0;
+  color: var(--pm-yellow);
+}
+
+.lightbox-count {
+  font-family: 'Press Start 2P', Galmuri14, monospace;
+  font-size: 10px;
+  color: var(--pm-yellow);
+}
+
+/* ---------- 토스트 ---------- */
+
+.toast {
+  font-family: Galmuri14, sans-serif;
+  font-size: 14px;
+  background: var(--pm-panel);
+  color: var(--pm-yellow);
+  border: 2px solid var(--pm-maze);
+  border-radius: 0;
+}
+
+/* ---------- 푸터 ---------- */
+
+.footer {
+  font-family: 'Press Start 2P', Galmuri14, monospace;
+  font-size: 10px;
+  color: var(--pm-yellow);
+  letter-spacing: 1px;
+  line-height: 2;
+  border-top: 2px solid var(--pm-maze-dim);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cover-scroll-arrow {
+    animation: none;
+    clip-path: polygon(50% 50%, 100% 22%, 100% 0, 0 0, 0 100%, 100% 100%, 100% 78%);
+  }
+}
