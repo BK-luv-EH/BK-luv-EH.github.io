@@ -335,12 +335,16 @@ function renderDday() {
   const now = new Date(today.getFullYear(), today.getMonth(), today.getDate());
   const diffDays = Math.round((target - now) / (1000 * 60 * 60 * 24));
 
+  const couple = `${CONFIG.groom} ♥ ${CONFIG.bride}`;
+  el.textContent = '';
+
   if (diffDays > 0) {
-    el.textContent = `${CONFIG.groom} ♥ ${CONFIG.bride}의 결혼식이 D-${diffDays}일 남았습니다`;
+    // 한 줄로 두기엔 길어 '결혼식이' 뒤에서 줄을 바꿉니다.
+    el.append(`${couple}의 결혼식이`, document.createElement('br'), `D-${diffDays}일 남았습니다`);
   } else if (diffDays === 0) {
-    el.textContent = `오늘은 ${CONFIG.groom} ♥ ${CONFIG.bride}의 결혼식 날입니다`;
+    el.textContent = `오늘은 ${couple}의 결혼식 날입니다`;
   } else {
-    el.textContent = `${CONFIG.groom} ♥ ${CONFIG.bride}는 부부가 되었습니다`;
+    el.textContent = `${couple}는 부부가 되었습니다`;
   }
 }
 
