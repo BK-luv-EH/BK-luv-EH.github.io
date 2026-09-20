@@ -39,6 +39,17 @@ body {
   margin-bottom: 16px;
 }
 
+/* 한글 라벨은 영문만큼 자간을 벌리면 글자가 흩어져 보입니다. */
+.section-label.ko {
+  font-size: 13px;
+  letter-spacing: 1px;
+}
+
+/* 안내 문구가 빠진 자리만큼 아래 여백을 확보합니다. */
+.account-section .section-label {
+  margin-bottom: 28px;
+}
+
 /* 커버 */
 .cover {
   position: relative;
@@ -531,12 +542,6 @@ body {
 }
 
 /* 계좌 */
-.account-desc {
-  font-size: 14px;
-  color: #7a6f5e;
-  margin-bottom: 28px;
-}
-
 .accordion {
   border-top: 1px solid #eee4d8;
 }
