@@ -10,10 +10,17 @@ const CONFIG = {
   venueAddress: '서울특별시 구로구 새말로 97 신도림테크노마트 8층 웨딩시티',
   // 카카오 개발자센터에서 발급받은 JavaScript 키. 비워두면 지도 대신 안내 문구가 표시됩니다.
   kakaoMapKey: 'ef5c92b80f52634d05d1e5abf4752244',
+  // 카카오톡 공유도 같은 JavaScript 키를 씁니다.
+  kakaoShareKey: 'ef5c92b80f52634d05d1e5abf4752244',
   // 공유되는 실제 주소. 로컬에서 눌러도 배포된 주소가 전달되도록 고정합니다.
-  // 공유 카드에 뜨는 제목·설명·사진은 index.html의 og 태그가 결정합니다.
   siteUrl: 'https://bk-luv-eh.github.io',
+  // 카카오톡 카드에 들어갈 세로 사진. 갤러리를 손봐도 깨지지 않도록 전용 파일을 씁니다.
+  shareImage: 'images/share-card.jpg',
+  shareImageWidth: 800,
+  shareImageHeight: 1200,
 };
+
+const KAKAO_SDK_VERSION = '2.7.5';
 
 document.addEventListener('DOMContentLoaded', () => {
   renderTexts();
@@ -525,7 +532,7 @@ function shareUrl() {
   return new URL('', `${CONFIG.siteUrl}/`).href;
 }
 
-function shareDescription() {
+function weddingDateLabel() {
   const d = CONFIG.weddingDate;
   const days = ['일', '월', '화', '수', '목', '금', '토'];
   const hour24 = d.getHours();
@@ -533,11 +540,29 @@ function shareDescription() {
   const hour12 = hour24 % 12 === 0 ? 12 : hour24 % 12;
   const minutes = d.getMinutes() ? ` ${d.getMinutes()}분` : '';
   return (
-    `${d.getFullYear()}년 ${d.getMonth() + 1}월 ${d.getDate()}일 ${days[d.getDay()]}요일 ` +
-    `${ampm} ${hour12}시${minutes}\n${CONFIG.venueName}`
+    `${d.getFullYear()}년 ${pad(d.getMonth() + 1)}월 ${pad(d.getDate())}일 ` +
+    `(${days[d.getDay()]}) ${ampm} ${hour12}시${minutes}`
   );
 }
 
+function loadKakaoShareSdk() {
+  if (window.Kakao && window.Kakao.Share) return Promise.resolve();
+
+  return new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    script.src = `https://t1.kakaocdn.net/kakao_js_sdk/${KAKAO_SDK_VERSION}/kakao.min.js`;
+    script.onload = () => {
+      try {
+        if (!window.Kakao.isInitialized()) window.Kakao.init(CONFIG.kakaoShareKey);
+        resolve();
+      } catch (e) {
+        reject(e);
+      }
+    };
+    script.onerror = () => reject(new Error('카카오 SDK를 불러오지 못했습니다'));
+    document.head.appendChild(script);
+  });
+}
 
 function initShare() {
   const linkBtn = document.getElementById('shareLink');
@@ -547,28 +572,33 @@ function initShare() {
     });
   }
 
-  const shareBtn = document.getElementById('shareSheet');
-  if (shareBtn) {
-    shareBtn.addEventListener('click', async () => {
-      const url = shareUrl();
+  const kakaoBtn = document.getElementById('shareKakao');
+  if (kakaoBtn) {
+    kakaoBtn.addEventListener('click', () => {
+      const link = { mobileWebUrl: shareUrl(), webUrl: shareUrl() };
 
-      // 공유 시트가 없는 환경(주로 PC 브라우저)에서는 링크 복사로 대체합니다.
-      if (!navigator.share) {
-        copyText(url, '링크를 복사했습니다. 붙여넣어 공유해주세요');
-        return;
-      }
-
-      try {
-        await navigator.share({
-          title: `${CONFIG.groom} ♥ ${CONFIG.bride} 결혼합니다`,
-          text: shareDescription(),
-          url,
+      loadKakaoShareSdk()
+        .then(() => {
+          Kakao.Share.sendDefault({
+            objectType: 'feed',
+            content: {
+              title: `${CONFIG.groom} ♥ ${CONFIG.bride}\n결혼식에 초대합니다.`,
+              imageUrl: shareUrl() + CONFIG.shareImage,
+              imageWidth: CONFIG.shareImageWidth,
+              imageHeight: CONFIG.shareImageHeight,
+              link,
+            },
+            itemContent: {
+              items: [{ item: '예식일', itemOp: weddingDateLabel() }],
+            },
+            buttons: [{ title: '모바일 청첩장 보기', link }],
+          });
+        })
+        .catch((e) => {
+          // SDK 차단·팝업 차단 등으로 공유창이 뜨지 못한 경우입니다.
+          console.error(e);
+          copyText(shareUrl(), '카카오톡 공유를 열지 못했습니다. 링크를 복사했어요');
         });
-      } catch (e) {
-        // 하객이 공유창을 그냥 닫은 것은 오류가 아닙니다.
-        if (e.name === 'AbortError') return;
-        copyText(url, '링크를 복사했습니다. 붙여넣어 공유해주세요');
-      }
     });
   }
 }
