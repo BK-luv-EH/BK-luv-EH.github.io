@@ -1,0 +1,580 @@
+/* ================================================================
+   Windows 98 테마
+
+   style.css 위에 얹어 색·글꼴·테두리만 바꿉니다. 레이아웃은 그대로
+   두므로, index.html에서 이 테마 <link> 줄들만 빼면 원래 청첩장으로
+   돌아갑니다. HTML은 건드리지 않았습니다 — 창 제목줄과 버튼은 모두
+   가상 요소(::before / ::after)로 그립니다.
+
+   한글 픽셀 글꼴은 Galmuri (OFL-1.1). 당시 굴림체의 비트맵 느낌을
+   내며, 14px 설계라 14의 배수로 써야 또렷합니다.
+   ================================================================ */
+
+:root {
+  --w-desktop: #008080;
+  --w-face: #c0c0c0;
+  --w-light: #ffffff;
+  --w-mid: #dfdfdf;
+  --w-shadow: #808080;
+  --w-dark: #000000;
+  --w-title: #000080;
+  --w-title-2: #1084d0;
+  --w-text: #000000;
+  --w-dim: #3f3f3f;
+  --w-field: #ffffff;
+  --w-select: #000080;
+}
+
+/* 창 바깥은 바탕화면 */
+html,
+body {
+  background: var(--w-desktop);
+}
+
+body {
+  font-family: Galmuri14, 'Malgun Gothic', Tahoma, sans-serif;
+  color: var(--w-text);
+  font-size: 14px;
+  line-height: 1.8;
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+}
+
+.wrap {
+  background: transparent;
+  box-shadow: none;
+  padding: 10px 0 18px;
+}
+
+/* ---------- 창 공통 ---------- */
+
+/* 각 섹션이 하나의 창이 됩니다. */
+.section,
+.cover {
+  position: relative;
+  margin: 0 10px 14px;
+  padding-top: 36px;
+  /* background-color 로 둡니다. 단축 속성을 쓰면 커버의 배경 사진까지 지워집니다. */
+  background-color: var(--w-face);
+  border: 2px solid;
+  /* 창 테두리: 왼쪽·위는 밝게, 오른쪽·아래는 어둡게 */
+  border-color: var(--w-light) var(--w-dark) var(--w-dark) var(--w-light);
+  box-shadow: inset 1px 1px 0 var(--w-mid), inset -1px -1px 0 var(--w-shadow);
+  border-bottom-width: 2px;
+}
+
+/* 제목줄 */
+.section::before,
+.cover::before {
+  content: attr(data-window);
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  right: 3px;
+  height: 22px;
+  padding: 0 8px;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(90deg, var(--w-title), var(--w-title-2));
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  z-index: 2;
+}
+
+/* 제목줄 오른쪽의 최소화 · 최대화 · 닫기 버튼 */
+.section::after,
+.cover::after {
+  content: '';
+  position: absolute;
+  top: 5px;
+  right: 6px;
+  width: 52px;
+  height: 18px;
+  z-index: 3;
+  background-repeat: no-repeat;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='52' height='18' shape-rendering='crispEdges'%3E%3Cg%3E%3Crect x='0' y='0' width='16' height='14' fill='%23c0c0c0'/%3E%3Crect x='18' y='0' width='16' height='14' fill='%23c0c0c0'/%3E%3Crect x='36' y='0' width='16' height='14' fill='%23c0c0c0'/%3E%3C/g%3E%3Cg stroke='%23ffffff' fill='none'%3E%3Cpath d='M0.5 13.5v-13h15M18.5 13.5v-13h15M36.5 13.5v-13h15'/%3E%3C/g%3E%3Cg stroke='%23000000' fill='none'%3E%3Cpath d='M0 13.5h15.5v-13M18 13.5h15.5v-13M36 13.5h15.5v-13'/%3E%3Cpath d='M4 10.5h8'/%3E%3Crect x='22.5' y='3.5' width='8' height='7'/%3E%3Cpath d='M40 4l7 6M47 4l-7 6'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* 창 제목: 개발자 책상 위 파일들처럼 */
+.cover { --w-name: 'main.jpg - 사진 뷰어'; }
+.greeting { --w-name: 'README.txt - 메모장'; }
+.calendar-section { --w-name: 'wedding.ics - 일정'; }
+.gallery-section { --w-name: 'photos - 24개 항목'; }
+.location-section { --w-name: 'location.map'; }
+.account-section { --w-name: 'account.txt - 메모장'; }
+.guestbook-section { --w-name: 'guestbook.log'; }
+.share-section { --w-name: 'share.exe'; }
+
+.section::before,
+.cover::before {
+  content: var(--w-name, '무제');
+}
+
+/* ---------- 커버 ---------- */
+
+.cover {
+  /* 제목줄과 바깥 여백만큼 줄여 창이 화면에 딱 맞게 */
+  height: calc(100dvh - 24px);
+  background-position: center bottom;
+  /* 사진 위쪽 여백은 사진 맨 윗줄 색으로 이어 붙입니다. */
+  background-color: #08161b;
+}
+
+.cover-scroll {
+  /* bottom 값은 style.css(56px)를 그대로 둡니다. 사진에 인쇄된 날짜를
+     피하려고 잡아둔 값이라 여기서 낮추면 글자를 가립니다. */
+  width: 34px;
+  height: 26px;
+  background: var(--w-face);
+  border: 2px solid;
+  border-color: var(--w-light) var(--w-dark) var(--w-dark) var(--w-light);
+  box-shadow: inset 1px 1px 0 var(--w-mid), inset -1px -1px 0 var(--w-shadow);
+  border-radius: 0;
+}
+
+.cover-scroll:active {
+  border-color: var(--w-shadow) var(--w-light) var(--w-light) var(--w-shadow);
+  box-shadow: inset 1px 1px 0 var(--w-dark);
+}
+
+/* 스크롤바의 아래 화살표 모양 */
+.cover-scroll-arrow {
+  width: 0;
+  height: 0;
+  margin: 2px 0 0;
+  border: none;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 6px solid var(--w-dark);
+  filter: none;
+  animation: none;
+}
+
+/* ---------- 본문 ---------- */
+
+.section {
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-bottom: 20px;
+}
+
+/* 섹션 제목을 창 안의 그룹 상자 제목처럼 */
+.section-label {
+  display: inline-block;
+  font-size: 14px;
+  letter-spacing: 1px;
+  color: #fff;
+  background: var(--w-select);
+  padding: 1px 10px;
+  margin-bottom: 18px;
+}
+
+.section-label.ko {
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+
+/* 인사말 */
+.greeting-dialogue p,
+.greeting-text,
+.transport-item p,
+.account-num,
+.gb-item-message,
+.venue-name {
+  font-size: 14px;
+  color: var(--w-text);
+}
+
+.greeting-text {
+  line-height: 2.1;
+}
+
+.greeting-dialogue .speaker {
+  font-size: 14px;
+  color: var(--w-title);
+  font-weight: 700;
+}
+
+.family-info p,
+.venue-address,
+.transport-note,
+.guestbook-desc,
+.share-desc,
+.gb-status,
+.gb-empty,
+.account-num .bank,
+.gb-modal-desc {
+  font-size: 14px;
+  color: var(--w-dim);
+}
+
+.family-info .role {
+  color: var(--w-title);
+  width: auto;
+  margin-right: 8px;
+  font-weight: 700;
+}
+
+.family-info strong {
+  color: var(--w-text);
+}
+
+/* 캘린더 */
+.calendar-date {
+  font-size: 14px;
+  color: var(--w-text);
+}
+
+.calendar {
+  background: var(--w-field);
+  padding: 8px 6px;
+  border: 2px solid;
+  border-color: var(--w-shadow) var(--w-light) var(--w-light) var(--w-shadow);
+  box-shadow: inset 1px 1px 0 var(--w-dark);
+}
+
+.calendar th {
+  font-size: 14px;
+  color: var(--w-title);
+  font-weight: 700;
+}
+
+.calendar td {
+  font-size: 14px;
+  color: var(--w-text);
+}
+
+/* 예식일은 선택된 항목처럼 */
+.calendar td.highlight span {
+  background: var(--w-select);
+  color: #fff;
+  border-radius: 0;
+  width: 26px;
+  height: 22px;
+  font-weight: 700;
+}
+
+.dday {
+  font-size: 14px;
+  color: var(--w-title);
+  letter-spacing: 0;
+  font-weight: 700;
+}
+
+/* 갤러리 */
+.gallery {
+  gap: 6px;
+  background: var(--w-field);
+  padding: 6px;
+  border: 2px solid;
+  border-color: var(--w-shadow) var(--w-light) var(--w-light) var(--w-shadow);
+  box-shadow: inset 1px 1px 0 var(--w-dark);
+}
+
+.gallery-item {
+  background: var(--w-face);
+}
+
+/* 지도 */
+.map,
+.map-placeholder {
+  border-radius: 0;
+  border: 2px solid;
+  border-color: var(--w-shadow) var(--w-light) var(--w-light) var(--w-shadow);
+  box-shadow: inset 1px 1px 0 var(--w-dark);
+  background: var(--w-field);
+}
+
+.map-placeholder {
+  color: var(--w-dim);
+}
+
+.transport-item {
+  border-top: 1px solid var(--w-shadow);
+  box-shadow: 0 -1px 0 var(--w-light);
+}
+
+.transport-item h3 {
+  font-size: 14px;
+  color: var(--w-title);
+  font-weight: 700;
+}
+
+/* ---------- 버튼 (창 안의 푸시 버튼) ---------- */
+
+.copy-btn,
+.map-link,
+.gallery-more,
+.gb-more,
+.gb-submit,
+.share-btn,
+.gb-modal-btn,
+.bgm-toggle,
+.to-top {
+  font-family: Galmuri14, 'Malgun Gothic', Tahoma, sans-serif;
+  font-size: 14px;
+  color: var(--w-text);
+  background: var(--w-face);
+  border: 2px solid;
+  border-color: var(--w-light) var(--w-dark) var(--w-dark) var(--w-light);
+  box-shadow: inset 1px 1px 0 var(--w-mid), inset -1px -1px 0 var(--w-shadow);
+  border-radius: 0;
+  text-decoration: none;
+}
+
+.copy-btn:active,
+.map-link:active,
+.gallery-more:active,
+.gb-more:active,
+.gb-submit:active,
+.share-btn:active,
+.gb-modal-btn:active,
+.bgm-toggle:active,
+.to-top:active {
+  border-color: var(--w-shadow) var(--w-light) var(--w-light) var(--w-shadow);
+  box-shadow: inset 1px 1px 0 var(--w-dark);
+}
+
+/* style.css의 .share-btn.primary가 더 구체적이라 따로 덮어씁니다. */
+.share-btn.primary {
+  background: var(--w-face);
+  color: var(--w-text);
+}
+
+.gb-submit:disabled,
+.gb-modal-btn:disabled {
+  color: var(--w-shadow);
+  text-shadow: 1px 1px 0 var(--w-light);
+}
+
+/* ---------- 계좌 ---------- */
+
+.accordion,
+.accordion:last-child {
+  border-top: 1px solid var(--w-shadow);
+  border-bottom: none;
+  box-shadow: 0 -1px 0 var(--w-light);
+}
+
+.accordion-toggle {
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--w-text);
+}
+
+.chevron {
+  color: var(--w-text);
+}
+
+.account-role {
+  font-size: 14px;
+  color: var(--w-title);
+  font-weight: 700;
+}
+
+/* ---------- 방명록 (입력칸은 움푹 들어간 필드) ---------- */
+
+.guestbook-form input,
+.guestbook-form textarea,
+.gb-modal-box input {
+  font-family: Galmuri14, 'Malgun Gothic', Tahoma, sans-serif;
+  font-size: 14px;
+  color: var(--w-text);
+  background: var(--w-field);
+  border: 2px solid;
+  border-color: var(--w-shadow) var(--w-light) var(--w-light) var(--w-shadow);
+  box-shadow: inset 1px 1px 0 var(--w-dark);
+  border-radius: 0;
+}
+
+.guestbook-form input::placeholder,
+.guestbook-form textarea::placeholder,
+.gb-modal-box input::placeholder {
+  color: var(--w-shadow);
+}
+
+.guestbook-form input:focus,
+.guestbook-form textarea:focus,
+.gb-modal-box input:focus {
+  outline: 1px dotted var(--w-dark);
+  outline-offset: -4px;
+}
+
+.gb-counter {
+  font-size: 14px;
+  color: var(--w-dim);
+}
+
+.gb-status,
+.gb-empty,
+.gb-item {
+  border-top: 1px solid var(--w-shadow);
+  box-shadow: 0 -1px 0 var(--w-light);
+}
+
+.gb-item-name {
+  font-size: 14px;
+  color: var(--w-title);
+  font-weight: 700;
+}
+
+.gb-item-date {
+  font-size: 14px;
+  color: var(--w-dim);
+}
+
+.gb-item-delete {
+  color: var(--w-text);
+}
+
+/* 삭제 확인은 작은 대화 상자 */
+.gb-modal-backdrop {
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.gb-modal-box {
+  background: var(--w-face);
+  border: 2px solid;
+  border-color: var(--w-light) var(--w-dark) var(--w-dark) var(--w-light);
+  box-shadow: inset 1px 1px 0 var(--w-mid), inset -1px -1px 0 var(--w-shadow);
+  border-radius: 0;
+  padding: 34px 16px 14px;
+}
+
+.gb-modal-box::before {
+  content: '메시지 삭제';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  right: 3px;
+  height: 22px;
+  padding: 0 8px;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(90deg, var(--w-title), var(--w-title-2));
+}
+
+.gb-modal-title {
+  font-size: 14px;
+  color: var(--w-text);
+  font-weight: 700;
+}
+
+.gb-modal-btn.danger {
+  background: var(--w-face);
+  color: var(--w-text);
+  border-color: var(--w-light) var(--w-dark) var(--w-dark) var(--w-light);
+}
+
+/* ---------- 떠 있는 버튼 ---------- */
+
+.bgm-toggle,
+.to-top {
+  width: 34px;
+  height: 30px;
+}
+
+/* 제목줄의 창 버튼과 겹치지 않게 한 줄 아래로 내립니다. */
+.bgm-toggle {
+  top: 46px;
+}
+
+.to-top-arrow {
+  width: 0;
+  height: 0;
+  margin: 3px 0 0;
+  border: none;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 6px solid var(--w-dark);
+  transform: none;
+}
+
+.bgm-icon {
+  color: var(--w-text);
+}
+
+.bgm-toggle.off .bgm-icon::after {
+  border-top-color: var(--w-text);
+}
+
+/* ---------- 크게 보기 ---------- */
+
+.lightbox {
+  background: var(--w-desktop);
+  padding: 10px;
+}
+
+.lightbox-track {
+  inset: 34px 12px 12px;
+  background: #000;
+  border: 2px solid;
+  border-color: var(--w-shadow) var(--w-light) var(--w-light) var(--w-shadow);
+}
+
+.lightbox::before {
+  content: 'photo viewer';
+  position: absolute;
+  top: 13px;
+  left: 13px;
+  right: 13px;
+  height: 22px;
+  padding: 0 8px;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(90deg, var(--w-title), var(--w-title-2));
+  z-index: 1;
+}
+
+.lightbox-close,
+.lightbox-nav {
+  background: var(--w-face);
+  border: 2px solid;
+  border-color: var(--w-light) var(--w-dark) var(--w-dark) var(--w-light);
+  box-shadow: inset 1px 1px 0 var(--w-mid), inset -1px -1px 0 var(--w-shadow);
+  border-radius: 0;
+  color: var(--w-text);
+}
+
+.lightbox-close {
+  top: 15px;
+  right: 15px;
+  width: 20px;
+  height: 18px;
+  font-size: 14px;
+}
+
+.lightbox-count {
+  font-size: 14px;
+  color: #fff;
+  bottom: 18px;
+}
+
+/* ---------- 토스트 ---------- */
+
+.toast {
+  font-family: Galmuri14, 'Malgun Gothic', Tahoma, sans-serif;
+  font-size: 14px;
+  background: #ffffe1;
+  color: var(--w-text);
+  border: 1px solid var(--w-dark);
+  border-radius: 0;
+}
+
+/* ---------- 푸터 ---------- */
+
+.footer {
+  font-size: 14px;
+  color: #fff;
+  letter-spacing: 1px;
+}
