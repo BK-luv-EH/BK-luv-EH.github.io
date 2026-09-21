@@ -77,6 +77,86 @@ body {
   letter-spacing: 2px;
 }
 
+/* ---------- 인사말부터 내리는 연분홍 눈송이 (js/snowfall.js) ---------- */
+
+/* 청첩장 카드 폭 안에서만 내리게 합니다. 데스크톱에서 바깥 배경까지 덮지 않도록. */
+.snowfall {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 100%;
+  max-width: 480px;
+  transform: translateX(-50%);
+  overflow: hidden;
+  pointer-events: none;
+  /* 본문 위, 떠 있는 버튼(150)·모달(200)·크게 보기(300) 아래 */
+  z-index: 90;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+.snowfall.is-visible {
+  opacity: 1;
+}
+
+/* 보이지 않는 동안에는 멈춰 둡니다. */
+.snowfall:not(.is-visible) .snowflake {
+  animation-play-state: paused;
+}
+
+.snowflake {
+  position: absolute;
+  top: 0;
+  background: no-repeat center / contain
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg stroke='%23f2a9c1' stroke-width='1.5' stroke-linecap='round' fill='none'%3E%3Cpath d='M12 2v20M3.34 7l17.32 10M3.34 17l17.32-10'/%3E%3Cpath d='M9.5 4l2.5 2.5L14.5 4M9.5 20l2.5-2.5 2.5 2.5M4.1 10.2l3.4-.9-.9-3.4M19.9 13.8l-3.4.9.9 3.4M4.1 13.8l3.4.9-.9 3.4M19.9 10.2l-3.4-.9.9-3.4'/%3E%3C/g%3E%3C/svg%3E");
+  animation-name: s-drift-a;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform;
+}
+
+.snowflake:nth-child(even) {
+  animation-name: s-drift-b;
+}
+
+/* 내려오면서 좌우로 살짝 흔들리고 천천히 돕니다. */
+@keyframes s-drift-a {
+  0% {
+    transform: translate3d(0, -30px, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate3d(14px, 25vh, 0) rotate(90deg);
+  }
+  50% {
+    transform: translate3d(-8px, 50vh, 0) rotate(180deg);
+  }
+  75% {
+    transform: translate3d(12px, 75vh, 0) rotate(270deg);
+  }
+  100% {
+    transform: translate3d(0, calc(100vh + 30px), 0) rotate(360deg);
+  }
+}
+
+@keyframes s-drift-b {
+  0% {
+    transform: translate3d(0, -30px, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate3d(-12px, 25vh, 0) rotate(-90deg);
+  }
+  50% {
+    transform: translate3d(10px, 50vh, 0) rotate(-180deg);
+  }
+  75% {
+    transform: translate3d(-14px, 75vh, 0) rotate(-270deg);
+  }
+  100% {
+    transform: translate3d(0, calc(100vh + 30px), 0) rotate(-360deg);
+  }
+}
+
 /* ---------- 인사말 ---------- */
 
 .greeting-dialogue p,
