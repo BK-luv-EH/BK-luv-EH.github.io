@@ -109,7 +109,7 @@ body {
   position: absolute;
   top: 0;
   background: no-repeat center / contain
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg stroke='%23f2a9c1' stroke-width='1.5' stroke-linecap='round' fill='none'%3E%3Cpath d='M12 2v20M3.34 7l17.32 10M3.34 17l17.32-10'/%3E%3Cpath d='M9.5 4l2.5 2.5L14.5 4M9.5 20l2.5-2.5 2.5 2.5M4.1 10.2l3.4-.9-.9-3.4M19.9 13.8l-3.4.9.9 3.4M4.1 13.8l3.4.9-.9 3.4M19.9 10.2l-3.4-.9.9-3.4'/%3E%3C/g%3E%3C/svg%3E");
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg stroke='%23f8d3df' stroke-width='1.5' stroke-linecap='round' fill='none'%3E%3Cpath d='M12 2v20M3.34 7l17.32 10M3.34 17l17.32-10'/%3E%3Cpath d='M9.5 4l2.5 2.5L14.5 4M9.5 20l2.5-2.5 2.5 2.5M4.1 10.2l3.4-.9-.9-3.4M19.9 13.8l-3.4.9.9 3.4M4.1 13.8l3.4.9-.9 3.4M19.9 10.2l-3.4-.9.9-3.4'/%3E%3C/g%3E%3C/svg%3E");
   animation-name: s-drift-a;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
