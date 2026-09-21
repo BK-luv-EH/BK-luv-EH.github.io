@@ -2,8 +2,8 @@
    첫눈 테마 (밝은 테마)
 
    인사말의 "내일 첫눈이 온대요"와 1월 결혼식에서 가져왔습니다.
-   눈처럼 흰 바탕에 옅은 겨울 하늘색을 포인트로 쓰고, 커버 사진
-   위로는 눈이 내립니다.
+   눈처럼 흰 바탕에 옅은 겨울 하늘색을 포인트로 쓰고, 섹션 사이를
+   작은 눈송이로 나눕니다. 커버 사진은 그대로 둡니다.
 
    style.css 위에 얹는 층이라 HTML은 건드리지 않았습니다. 글꼴도
    기존 명조체를 그대로 씁니다. index.html에서 이 <link> 한 줄만
@@ -75,73 +75,6 @@ body {
 
 .section-label.ko {
   letter-spacing: 2px;
-}
-
-/* ---------- 커버: 사진 위로 내리는 눈 ---------- */
-
-.cover {
-  overflow: hidden;
-}
-
-/* 두 겹의 눈을 서로 다른 속도로 내려 깊이를 줍니다.
-   무늬가 반복되는 배경을 한 칸만큼 옮기는 방식이라 이어진 자리가 보이지 않습니다. */
-.cover::before,
-.cover::after {
-  content: '';
-  position: absolute;
-  top: -240px;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  pointer-events: none;
-  background-repeat: repeat;
-  will-change: transform;
-}
-
-/* 가까운 눈: 크고 빠르게 */
-.cover::before {
-  background-size: 240px 240px;
-  background-image:
-    radial-gradient(circle at 30px 40px, rgba(255, 255, 255, 0.95) 3px, transparent 4px),
-    radial-gradient(circle at 110px 150px, rgba(255, 255, 255, 0.85) 2.5px, transparent 3.5px),
-    radial-gradient(circle at 190px 70px, rgba(255, 255, 255, 0.9) 3.5px, transparent 4.5px),
-    radial-gradient(circle at 70px 210px, rgba(255, 255, 255, 0.8) 2.5px, transparent 3.5px),
-    radial-gradient(circle at 220px 190px, rgba(255, 255, 255, 0.85) 3px, transparent 4px),
-    radial-gradient(circle at 150px 110px, rgba(255, 255, 255, 0.75) 2px, transparent 3px);
-  animation: s-fall 12s linear infinite;
-}
-
-/* 먼 눈: 작고 느리게 */
-.cover::after {
-  background-size: 160px 240px;
-  background-image:
-    radial-gradient(circle at 20px 100px, rgba(255, 255, 255, 0.7) 1.6px, transparent 2.4px),
-    radial-gradient(circle at 90px 30px, rgba(255, 255, 255, 0.6) 1.4px, transparent 2.2px),
-    radial-gradient(circle at 130px 170px, rgba(255, 255, 255, 0.65) 1.8px, transparent 2.6px),
-    radial-gradient(circle at 50px 220px, rgba(255, 255, 255, 0.55) 1.4px, transparent 2.2px),
-    radial-gradient(circle at 110px 80px, rgba(255, 255, 255, 0.6) 1.2px, transparent 2px);
-  animation: s-fall 20s linear infinite;
-}
-
-@keyframes s-fall {
-  from {
-    transform: translate3d(0, 0, 0);
-  }
-  to {
-    transform: translate3d(0, 240px, 0);
-  }
-}
-
-/* 스크롤 버튼은 눈보다 위에 */
-.cover-scroll {
-  z-index: 2;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .cover::before,
-  .cover::after {
-    animation: none;
-  }
 }
 
 /* ---------- 인사말 ---------- */
