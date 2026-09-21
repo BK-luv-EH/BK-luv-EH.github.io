@@ -1,0 +1,408 @@
+/* ================================================================
+   첫눈 테마 (밝은 테마)
+
+   인사말의 "내일 첫눈이 온대요"와 1월 결혼식에서 가져왔습니다.
+   눈처럼 흰 바탕에 옅은 겨울 하늘색을 포인트로 쓰고, 커버 사진
+   위로는 눈이 내립니다.
+
+   style.css 위에 얹는 층이라 HTML은 건드리지 않았습니다. 글꼴도
+   기존 명조체를 그대로 씁니다. index.html에서 이 <link> 한 줄만
+   빼면 원래 청첩장으로 돌아갑니다.
+
+   하늘색은 두 단계로 나눠 씁니다. 옅은 색(--s-sky)은 선과 장식에만,
+   글자에는 흰 바탕 대비를 통과하는 진한 색(--s-ink-blue)을 씁니다.
+   ================================================================ */
+
+:root {
+  --s-bg: #eef2f6;
+  --s-paper: #ffffff;
+  --s-snow: #f6f9fc;
+  --s-line: #dfe7ef;
+  --s-sky: #a9c3dc;
+  --s-ink-blue: #45688d;
+  --s-text: #2b3440;
+  --s-muted: #5d6978;
+}
+
+html,
+body {
+  background: var(--s-bg);
+}
+
+body {
+  color: var(--s-text);
+}
+
+.wrap {
+  background: var(--s-paper);
+  box-shadow: 0 0 50px rgba(69, 104, 141, 0.1);
+}
+
+/* 섹션 사이는 선 대신 가운데 작은 눈송이로 나눕니다. */
+.section {
+  position: relative;
+  border-bottom: none;
+}
+
+.section + .section::before {
+  content: '';
+  position: absolute;
+  top: -9px;
+  left: 50%;
+  width: 18px;
+  height: 18px;
+  margin-left: -9px;
+  background-repeat: no-repeat;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'%3E%3Cg stroke='%23a9c3dc' stroke-width='1.2' stroke-linecap='round' fill='none'%3E%3Cpath d='M9 1.5v15M2.5 5.25l13 7.5M2.5 12.75l13-7.5'/%3E%3Cpath d='M7 3l2 2 2-2M7 15l2-2 2 2M3.2 8.1l2.7-.4-.9-2.6M14.8 9.9l-2.7.4.9 2.6M3.2 9.9l2.7.4-.9 2.6M14.8 8.1l-2.7-.4.9-2.6'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* 눈송이 양옆으로 짧게 번지는 선 */
+.section + .section::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 150px;
+  height: 1px;
+  margin-left: -75px;
+  background: linear-gradient(90deg, transparent, var(--s-line) 35%, transparent 44%, transparent 56%, var(--s-line) 65%, transparent);
+}
+
+.section-label {
+  color: var(--s-ink-blue);
+  letter-spacing: 4px;
+}
+
+.section-label.ko {
+  letter-spacing: 2px;
+}
+
+/* ---------- 커버: 사진 위로 내리는 눈 ---------- */
+
+.cover {
+  overflow: hidden;
+}
+
+/* 두 겹의 눈을 서로 다른 속도로 내려 깊이를 줍니다.
+   무늬가 반복되는 배경을 한 칸만큼 옮기는 방식이라 이어진 자리가 보이지 않습니다. */
+.cover::before,
+.cover::after {
+  content: '';
+  position: absolute;
+  top: -240px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  background-repeat: repeat;
+  will-change: transform;
+}
+
+/* 가까운 눈: 크고 빠르게 */
+.cover::before {
+  background-size: 240px 240px;
+  background-image:
+    radial-gradient(circle at 30px 40px, rgba(255, 255, 255, 0.95) 3px, transparent 4px),
+    radial-gradient(circle at 110px 150px, rgba(255, 255, 255, 0.85) 2.5px, transparent 3.5px),
+    radial-gradient(circle at 190px 70px, rgba(255, 255, 255, 0.9) 3.5px, transparent 4.5px),
+    radial-gradient(circle at 70px 210px, rgba(255, 255, 255, 0.8) 2.5px, transparent 3.5px),
+    radial-gradient(circle at 220px 190px, rgba(255, 255, 255, 0.85) 3px, transparent 4px),
+    radial-gradient(circle at 150px 110px, rgba(255, 255, 255, 0.75) 2px, transparent 3px);
+  animation: s-fall 12s linear infinite;
+}
+
+/* 먼 눈: 작고 느리게 */
+.cover::after {
+  background-size: 160px 240px;
+  background-image:
+    radial-gradient(circle at 20px 100px, rgba(255, 255, 255, 0.7) 1.6px, transparent 2.4px),
+    radial-gradient(circle at 90px 30px, rgba(255, 255, 255, 0.6) 1.4px, transparent 2.2px),
+    radial-gradient(circle at 130px 170px, rgba(255, 255, 255, 0.65) 1.8px, transparent 2.6px),
+    radial-gradient(circle at 50px 220px, rgba(255, 255, 255, 0.55) 1.4px, transparent 2.2px),
+    radial-gradient(circle at 110px 80px, rgba(255, 255, 255, 0.6) 1.2px, transparent 2px);
+  animation: s-fall 20s linear infinite;
+}
+
+@keyframes s-fall {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(0, 240px, 0);
+  }
+}
+
+/* 스크롤 버튼은 눈보다 위에 */
+.cover-scroll {
+  z-index: 2;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cover::before,
+  .cover::after {
+    animation: none;
+  }
+}
+
+/* ---------- 인사말 ---------- */
+
+.greeting-dialogue p,
+.greeting-text {
+  color: var(--s-text);
+}
+
+.greeting-dialogue .speaker {
+  color: var(--s-ink-blue);
+}
+
+.family-info p {
+  color: var(--s-muted);
+}
+
+.family-info .role {
+  color: var(--s-ink-blue);
+}
+
+.family-info strong {
+  color: var(--s-text);
+}
+
+/* ---------- 캘린더 ---------- */
+
+.calendar-date {
+  color: var(--s-text);
+}
+
+.calendar th {
+  color: var(--s-ink-blue);
+}
+
+.calendar td {
+  color: var(--s-muted);
+}
+
+.calendar td.highlight span {
+  background: var(--s-ink-blue);
+  color: #fff;
+  box-shadow: 0 0 0 4px #e3edf6;
+}
+
+.dday {
+  color: var(--s-ink-blue);
+}
+
+/* ---------- 갤러리 ---------- */
+
+.gallery-item {
+  background: var(--s-snow);
+}
+
+.gallery-more,
+.gb-more {
+  color: var(--s-ink-blue);
+  border-color: var(--s-line);
+  background: var(--s-paper);
+}
+
+/* ---------- 오시는 길 ---------- */
+
+.venue-name {
+  color: var(--s-text);
+}
+
+.venue-address {
+  color: var(--s-muted);
+}
+
+.map {
+  background: var(--s-snow);
+  box-shadow: 0 0 0 1px var(--s-line);
+}
+
+.map-placeholder {
+  background: var(--s-snow);
+  color: var(--s-muted);
+}
+
+.map-link {
+  color: var(--s-ink-blue);
+  border-color: var(--s-line);
+}
+
+.transport-item {
+  border-top: 1px solid var(--s-line);
+}
+
+.transport-item h3 {
+  color: var(--s-ink-blue);
+}
+
+.transport-item p {
+  color: var(--s-text);
+}
+
+.transport-note {
+  color: var(--s-muted);
+}
+
+/* ---------- 버튼 ---------- */
+
+.copy-btn {
+  background: var(--s-paper);
+  color: var(--s-ink-blue);
+  border-color: var(--s-line);
+}
+
+/* ---------- 마음 전하실 곳 ---------- */
+
+.accordion,
+.accordion:last-child {
+  border-top: 1px solid var(--s-line);
+}
+
+.accordion:last-child {
+  border-bottom: 1px solid var(--s-line);
+}
+
+.accordion-toggle {
+  color: var(--s-text);
+}
+
+.chevron {
+  color: var(--s-sky);
+}
+
+.account-role {
+  color: var(--s-ink-blue);
+}
+
+.account-num {
+  color: var(--s-text);
+}
+
+.account-num .bank {
+  color: var(--s-muted);
+}
+
+/* ---------- 방명록 ---------- */
+
+.guestbook-desc,
+.share-desc {
+  color: var(--s-muted);
+}
+
+.guestbook-form input,
+.guestbook-form textarea,
+.gb-modal-box input {
+  background: var(--s-snow);
+  color: var(--s-text);
+  border-color: var(--s-line);
+}
+
+.guestbook-form input::placeholder,
+.guestbook-form textarea::placeholder,
+.gb-modal-box input::placeholder {
+  color: #8d98a6;
+}
+
+.guestbook-form input:focus,
+.guestbook-form textarea:focus,
+.gb-modal-box input:focus {
+  border-color: var(--s-sky);
+  background: var(--s-paper);
+}
+
+.gb-counter {
+  color: var(--s-muted);
+}
+
+.gb-submit,
+.share-btn.primary {
+  background: var(--s-ink-blue);
+  color: #fff;
+}
+
+.gb-status,
+.gb-empty,
+.gb-item {
+  color: var(--s-muted);
+  border-top: 1px solid var(--s-line);
+}
+
+.gb-item-name {
+  color: var(--s-text);
+}
+
+.gb-item-date,
+.gb-item-delete {
+  color: var(--s-muted);
+}
+
+.gb-item-message {
+  color: var(--s-text);
+}
+
+.gb-modal-backdrop {
+  background: rgba(43, 52, 64, 0.4);
+}
+
+.gb-modal-box {
+  background: var(--s-paper);
+}
+
+.gb-modal-title {
+  color: var(--s-text);
+}
+
+.gb-modal-desc {
+  color: var(--s-muted);
+}
+
+.gb-modal-btn {
+  background: var(--s-paper);
+  color: var(--s-muted);
+  border-color: var(--s-line);
+}
+
+.gb-modal-btn.danger {
+  background: var(--s-ink-blue);
+  border-color: var(--s-ink-blue);
+  color: #fff;
+}
+
+/* ---------- 공유 ---------- */
+
+.share-btn.link {
+  background: var(--s-snow);
+  color: var(--s-ink-blue);
+}
+
+/* ---------- 떠 있는 버튼 ---------- */
+
+.bgm-toggle,
+.to-top {
+  background: rgba(255, 255, 255, 0.88);
+  border-color: var(--s-line);
+  color: var(--s-ink-blue);
+}
+
+.to-top-arrow {
+  border-left-color: var(--s-ink-blue);
+  border-top-color: var(--s-ink-blue);
+}
+
+.bgm-toggle.off .bgm-icon::after {
+  border-top-color: var(--s-ink-blue);
+}
+
+/* ---------- 토스트 ---------- */
+
+.toast {
+  background: rgba(43, 52, 64, 0.92);
+}
+
+/* ---------- 푸터 ---------- */
+
+.footer {
+  color: var(--s-ink-blue);
+}
