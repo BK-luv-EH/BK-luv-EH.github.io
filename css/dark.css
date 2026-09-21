@@ -1,0 +1,376 @@
+/* ================================================================
+   다크 모드
+
+   style.css 위에 얹어 색만 바꿉니다. 글꼴과 레이아웃은 그대로 둡니다 —
+   기존 명조체가 이미 단정해서, 어둡게 만드는 일은 색을 덜어내는 쪽이
+   더 세련되게 나옵니다. index.html에서 이 <link> 한 줄만 빼면 원래
+   청첩장으로 돌아갑니다.
+
+   바탕은 순검정 대신 따뜻한 먹색을 씁니다. 순검정은 사진과 만나는
+   자리가 딱딱하게 끊기고, 금색 계열과 같이 두면 차갑게 보입니다.
+   ================================================================ */
+
+:root {
+  --d-bg: #100e0c;
+  --d-panel: #16130f;
+  --d-raised: #1d1913;
+  --d-line: rgba(201, 171, 125, 0.22);
+  --d-line-soft: rgba(201, 171, 125, 0.11);
+  --d-gold: #d4b887;
+  --d-gold-dim: #b09569;
+  --d-text: #ece7e0;
+  --d-muted: #a99e8e;
+}
+
+html,
+body {
+  background: var(--d-bg);
+}
+
+body {
+  color: var(--d-text);
+}
+
+.wrap {
+  background: var(--d-panel);
+  box-shadow: 0 0 60px rgba(0, 0, 0, 0.6);
+}
+
+/* 섹션 사이는 선 대신 가운데 짧은 금선과 마름모로 나눕니다. */
+.section {
+  position: relative;
+  border-bottom: none;
+}
+
+.section + .section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 120px;
+  height: 1px;
+  margin-left: -60px;
+  background: linear-gradient(90deg, transparent, var(--d-line), transparent);
+}
+
+.section + .section::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: 50%;
+  width: 4px;
+  height: 4px;
+  margin-left: -2px;
+  background: var(--d-gold-dim);
+  transform: rotate(45deg);
+}
+
+.section-label {
+  color: var(--d-gold);
+  letter-spacing: 4px;
+}
+
+.section-label.ko {
+  letter-spacing: 2px;
+}
+
+/* ---------- 커버 ---------- */
+
+.cover {
+  /* 배경색은 style.css의 #08161b 그대로. 사진 맨 윗줄 색이라 바꾸면
+     사진과 만나는 자리에 이음새가 드러납니다. */
+  box-shadow: none;
+}
+
+/* ---------- 인사말 ---------- */
+
+.greeting-dialogue p,
+.greeting-text {
+  color: var(--d-text);
+}
+
+.greeting-dialogue .speaker {
+  color: var(--d-gold);
+}
+
+.family-info p {
+  color: var(--d-muted);
+}
+
+.family-info .role {
+  color: var(--d-gold-dim);
+}
+
+.family-info strong {
+  color: var(--d-text);
+  font-weight: 400;
+}
+
+/* ---------- 캘린더 ---------- */
+
+.calendar-date {
+  color: var(--d-text);
+}
+
+.calendar th {
+  color: var(--d-gold-dim);
+}
+
+.calendar td {
+  color: var(--d-muted);
+}
+
+.calendar td.highlight span {
+  background: var(--d-gold);
+  color: #16130f;
+}
+
+.dday {
+  color: var(--d-gold);
+  letter-spacing: 1px;
+}
+
+/* ---------- 갤러리 ---------- */
+
+.gallery-item {
+  background: var(--d-raised);
+}
+
+.gallery-more,
+.gb-more {
+  color: var(--d-gold);
+  border-color: var(--d-line);
+  background: none;
+}
+
+/* ---------- 오시는 길 ---------- */
+
+.venue-name {
+  color: var(--d-text);
+}
+
+.venue-address {
+  color: var(--d-muted);
+}
+
+.map {
+  background: var(--d-raised);
+  box-shadow: 0 0 0 1px var(--d-line);
+  /* 밝은 지도가 어두운 지면에서 튀지 않게 살짝 낮춥니다.
+     글자를 읽는 데 지장이 없는 선까지만 내렸습니다. */
+  filter: brightness(0.88) saturate(0.92);
+}
+
+.map-placeholder {
+  background: var(--d-raised);
+  color: var(--d-muted);
+  box-shadow: 0 0 0 1px var(--d-line);
+}
+
+.map-link {
+  color: var(--d-gold);
+  border-color: var(--d-line);
+}
+
+.transport-item {
+  border-top: 1px solid var(--d-line-soft);
+}
+
+.transport-item h3 {
+  color: var(--d-gold-dim);
+}
+
+.transport-item p {
+  color: var(--d-text);
+}
+
+.transport-note {
+  color: var(--d-muted);
+}
+
+/* ---------- 버튼 ---------- */
+
+.copy-btn {
+  background: transparent;
+  color: var(--d-gold);
+  border-color: var(--d-line);
+}
+
+/* ---------- 마음 전하실 곳 ---------- */
+
+.accordion,
+.accordion:last-child {
+  border-top: 1px solid var(--d-line-soft);
+  border-bottom: none;
+}
+
+.accordion-toggle {
+  color: var(--d-text);
+}
+
+.chevron {
+  color: var(--d-gold-dim);
+}
+
+.account-role {
+  color: var(--d-gold-dim);
+}
+
+.account-num {
+  color: var(--d-text);
+}
+
+.account-num .bank {
+  color: var(--d-muted);
+}
+
+/* ---------- 방명록 ---------- */
+
+.guestbook-desc,
+.share-desc {
+  color: var(--d-muted);
+}
+
+.guestbook-form input,
+.guestbook-form textarea,
+.gb-modal-box input {
+  background: var(--d-raised);
+  color: var(--d-text);
+  border-color: var(--d-line-soft);
+}
+
+.guestbook-form input::placeholder,
+.guestbook-form textarea::placeholder,
+.gb-modal-box input::placeholder {
+  color: #7b7364;
+}
+
+.guestbook-form input:focus,
+.guestbook-form textarea:focus,
+.gb-modal-box input:focus {
+  border-color: var(--d-gold-dim);
+}
+
+.gb-counter {
+  color: var(--d-muted);
+}
+
+.gb-submit {
+  background: var(--d-gold);
+  color: #16130f;
+}
+
+.gb-status,
+.gb-empty,
+.gb-item {
+  color: var(--d-muted);
+  border-top: 1px solid var(--d-line-soft);
+}
+
+.gb-item-name {
+  color: var(--d-gold);
+}
+
+.gb-item-date {
+  color: var(--d-muted);
+}
+
+.gb-item-delete {
+  color: var(--d-muted);
+}
+
+.gb-item-message {
+  color: var(--d-text);
+}
+
+.gb-modal-backdrop {
+  background: rgba(0, 0, 0, 0.72);
+}
+
+.gb-modal-box {
+  background: var(--d-panel);
+  box-shadow: 0 0 0 1px var(--d-line), 0 20px 50px rgba(0, 0, 0, 0.6);
+}
+
+.gb-modal-title {
+  color: var(--d-text);
+}
+
+.gb-modal-desc {
+  color: var(--d-muted);
+}
+
+.gb-modal-btn {
+  background: transparent;
+  color: var(--d-muted);
+  border-color: var(--d-line-soft);
+}
+
+.gb-modal-btn.danger {
+  background: var(--d-gold);
+  border-color: var(--d-gold);
+  color: #16130f;
+}
+
+/* ---------- 공유 ---------- */
+
+.share-btn.primary {
+  background: var(--d-gold);
+  color: #16130f;
+}
+
+.share-btn.link {
+  background: transparent;
+  color: var(--d-gold);
+  border: 1px solid var(--d-line);
+}
+
+/* ---------- 떠 있는 버튼 ---------- */
+
+.bgm-toggle,
+.to-top {
+  background: rgba(29, 25, 19, 0.85);
+  border-color: var(--d-line);
+  color: var(--d-gold);
+}
+
+.to-top-arrow {
+  border-left-color: var(--d-gold);
+  border-top-color: var(--d-gold);
+}
+
+.bgm-toggle.off .bgm-icon::after {
+  border-top-color: var(--d-gold);
+}
+
+/* ---------- 크게 보기 ---------- */
+
+.lightbox {
+  background: #0a0908;
+}
+
+.lightbox-close,
+.lightbox-nav {
+  background: rgba(236, 231, 224, 0.1);
+  color: var(--d-text);
+}
+
+.lightbox-count {
+  color: var(--d-muted);
+  letter-spacing: 2px;
+}
+
+/* ---------- 토스트 ---------- */
+
+.toast {
+  background: var(--d-raised);
+  color: var(--d-text);
+  box-shadow: 0 0 0 1px var(--d-line);
+}
+
+/* ---------- 푸터 ---------- */
+
+.footer {
+  color: var(--d-gold-dim);
+  border-top: 1px solid var(--d-line-soft);
+}
