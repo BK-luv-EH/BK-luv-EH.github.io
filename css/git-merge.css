@@ -1,0 +1,484 @@
+/* ================================================================
+   git merge 테마
+
+   bk 브랜치와 eh 브랜치가 하나로 합쳐지는 커밋 그래프를 청첩장의
+   뼈대로 씁니다. 섹션 하나하나가 main 브랜치 위의 커밋이고, 인사말
+   맨 위에서 두 브랜치가 병합됩니다.
+
+   style.css 위에 얹는 층이라 HTML은 건드리지 않았습니다. 그래프와
+   커밋 해시는 모두 가상 요소로 그립니다. index.html에서 이 테마의
+   <link> 줄들만 빼면 원래 청첩장으로 돌아갑니다.
+
+   두 브랜치 색은 그대로 섞여 병합 이후의 색이 됩니다:
+   bk(파랑) + eh(분홍) → 그라데이션.
+   ================================================================ */
+
+:root {
+  --g-bg: #0b0b0e;
+  --g-panel: #111116;
+  --g-raised: #18181f;
+  --g-line: rgba(255, 255, 255, 0.08);
+  --g-line-strong: rgba(255, 255, 255, 0.14);
+  --g-text: #ededf0;
+  --g-muted: #9499a3;
+  --g-bk: #5b9dff;
+  --g-eh: #ff7eb6;
+  --g-merge: linear-gradient(135deg, #5b9dff, #ff7eb6);
+  --g-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+}
+
+html,
+body {
+  background: var(--g-bg);
+}
+
+body {
+  font-family: 'Pretendard Variable', Pretendard, -apple-system, 'Apple SD Gothic Neo', sans-serif;
+  color: var(--g-text);
+  letter-spacing: -0.01em;
+}
+
+.wrap {
+  background: var(--g-panel);
+  box-shadow: 0 0 0 1px var(--g-line), 0 30px 80px rgba(0, 0, 0, 0.55);
+}
+
+.section {
+  position: relative;
+  border-bottom: none;
+}
+
+/* ---------- 커밋 그래프: 섹션 사이를 잇는 main 브랜치 ---------- */
+
+.section + .section::before {
+  content: '';
+  position: absolute;
+  top: -28px;
+  left: 50%;
+  width: 2px;
+  height: 56px;
+  margin-left: -1px;
+  background: linear-gradient(180deg, transparent, #b98bdb 40%, #b98bdb 60%, transparent);
+  opacity: 0.55;
+}
+
+/* 각 섹션이 하나의 커밋 */
+.section + .section::after {
+  content: '';
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  margin-left: -6px;
+  border-radius: 50%;
+  background: var(--g-merge);
+  box-shadow: 0 0 0 3px var(--g-panel), 0 0 14px rgba(185, 139, 219, 0.45);
+}
+
+/* ---------- 인사말 맨 위: 두 브랜치의 병합 ---------- */
+
+.greeting {
+  padding-top: 196px;
+}
+
+.greeting::before {
+  content: '';
+  position: absolute;
+  top: 36px;
+  left: 50%;
+  width: 200px;
+  height: 112px;
+  margin-left: -100px;
+  background-repeat: no-repeat;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='112' viewBox='0 0 200 112'%3E%3Cdefs%3E%3ClinearGradient id='m' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%235b9dff'/%3E%3Cstop offset='1' stop-color='%23ff7eb6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M40 16V38C40 68 100 60 100 90' fill='none' stroke='%235b9dff' stroke-width='2'/%3E%3Cpath d='M160 16V38C160 68 100 60 100 90' fill='none' stroke='%23ff7eb6' stroke-width='2'/%3E%3Ccircle cx='40' cy='16' r='5' fill='%235b9dff'/%3E%3Ccircle cx='160' cy='16' r='5' fill='%23ff7eb6'/%3E%3Ccircle cx='100' cy='94' r='9' fill='url(%23m)'/%3E%3Ccircle cx='100' cy='94' r='3.5' fill='%23111116'/%3E%3Ctext x='54' y='20' font-family='ui-monospace,Menlo,monospace' font-size='12' fill='%235b9dff'%3Ebk%3C/text%3E%3Ctext x='146' y='20' font-family='ui-monospace,Menlo,monospace' font-size='12' fill='%23ff7eb6' text-anchor='end'%3Eeh%3C/text%3E%3C/svg%3E");
+}
+
+/* 병합 커밋 메시지 */
+.greeting::after {
+  content: "Merge branches 'bk' and 'eh'";
+  position: absolute;
+  top: 152px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-family: var(--g-mono);
+  font-size: 12px;
+  letter-spacing: 0;
+  color: var(--g-muted);
+}
+
+/* ---------- 섹션 제목: 커밋 해시 + 메시지 ---------- */
+
+.greeting { --hash: 'a3f9c21'; }
+.calendar-section { --hash: '7e1b04d'; }
+.gallery-section { --hash: 'c8d2e6f'; }
+.location-section { --hash: '4b0a9e3'; }
+.account-section { --hash: '9f3c7b1'; }
+.guestbook-section { --hash: '2d6e8a4'; }
+.share-section { --hash: 'e5a1f90'; }
+
+.section-label {
+  font-family: var(--g-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 3px;
+  color: var(--g-text);
+  margin-bottom: 24px;
+}
+
+.section-label::before {
+  content: var(--hash);
+  display: block;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  color: #b98bdb;
+  margin-bottom: 6px;
+}
+
+.section-label.ko {
+  font-family: 'Pretendard Variable', Pretendard, sans-serif;
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+
+/* ---------- 커버 ---------- */
+
+/* 배경색은 style.css의 #08161b 그대로 둡니다. 사진 맨 윗줄 색이라
+   바꾸면 사진과 만나는 자리에 이음새가 드러납니다. */
+
+/* ---------- 인사말 ---------- */
+
+.greeting-dialogue p {
+  color: var(--g-text);
+}
+
+.greeting-dialogue .speaker {
+  font-family: var(--g-mono);
+  font-size: 12px;
+  letter-spacing: 0.5px;
+}
+
+/* 두 사람의 대사를 각자의 브랜치 색으로 */
+.greeting-dialogue p:first-child .speaker {
+  color: var(--g-bk);
+}
+
+.greeting-dialogue p:last-child .speaker {
+  color: var(--g-eh);
+}
+
+.greeting-text {
+  color: var(--g-text);
+}
+
+.family-info p {
+  color: var(--g-muted);
+}
+
+.family-info p:first-child .role {
+  color: var(--g-bk);
+}
+
+.family-info p:last-child .role {
+  color: var(--g-eh);
+}
+
+.family-info strong {
+  color: var(--g-text);
+  font-weight: 600;
+}
+
+/* ---------- 캘린더 ---------- */
+
+.calendar-date {
+  color: var(--g-text);
+  font-weight: 600;
+}
+
+.calendar th {
+  font-family: var(--g-mono);
+  font-size: 11px;
+  color: var(--g-muted);
+}
+
+.calendar td {
+  color: var(--g-muted);
+}
+
+.calendar td.highlight span {
+  background: var(--g-merge);
+  color: #0b0b0e;
+  font-weight: 700;
+  box-shadow: 0 0 16px rgba(185, 139, 219, 0.5);
+}
+
+.dday {
+  font-family: var(--g-mono);
+  font-size: 13px;
+  letter-spacing: 0;
+  color: var(--g-text);
+}
+
+/* ---------- 갤러리 ---------- */
+
+.gallery {
+  gap: 4px;
+}
+
+.gallery-item {
+  background: var(--g-raised);
+  border-radius: 4px;
+}
+
+/* ---------- 오시는 길 ---------- */
+
+.venue-name {
+  color: var(--g-text);
+  font-weight: 600;
+}
+
+.venue-address {
+  color: var(--g-muted);
+}
+
+.map {
+  border-radius: 10px;
+  box-shadow: 0 0 0 1px var(--g-line-strong);
+  background: var(--g-raised);
+  filter: brightness(0.9);
+}
+
+.map-placeholder {
+  background: var(--g-raised);
+  color: var(--g-muted);
+  border-radius: 10px;
+}
+
+.transport-item {
+  border-top: 1px solid var(--g-line);
+}
+
+.transport-item h3 {
+  font-family: var(--g-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  color: var(--g-muted);
+}
+
+.transport-item p {
+  color: var(--g-text);
+}
+
+.transport-note {
+  color: var(--g-muted);
+}
+
+/* ---------- 버튼 ---------- */
+
+.copy-btn,
+.map-link,
+.gallery-more,
+.gb-more,
+.share-btn.link,
+.gb-modal-btn {
+  font-family: inherit;
+  color: var(--g-text);
+  background: var(--g-raised);
+  border: 1px solid var(--g-line-strong);
+  border-radius: 8px;
+}
+
+/* 주 버튼은 병합 색. 흰 글자는 이 색 위에서 대비가 모자라 어두운 글자를 씁니다. */
+.gb-submit,
+.share-btn.primary {
+  font-family: inherit;
+  background: var(--g-merge);
+  color: #0b0b0e;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+}
+
+/* ---------- 마음 전하실 곳 ---------- */
+
+.accordion,
+.accordion:last-child {
+  border-top: 1px solid var(--g-line);
+  border-bottom: none;
+}
+
+.accordion-toggle {
+  color: var(--g-text);
+  font-family: inherit;
+}
+
+.chevron {
+  color: var(--g-muted);
+}
+
+/* 신랑측·신부측을 각자의 브랜치 색으로 */
+.accordion:nth-of-type(1) .account-role {
+  color: var(--g-bk);
+}
+
+.accordion:nth-of-type(2) .account-role {
+  color: var(--g-eh);
+}
+
+.account-num {
+  font-family: var(--g-mono);
+  font-size: 13px;
+  letter-spacing: 0;
+  color: var(--g-text);
+}
+
+.account-num .bank {
+  font-family: 'Pretendard Variable', Pretendard, sans-serif;
+  color: var(--g-muted);
+}
+
+/* ---------- 방명록 ---------- */
+
+.guestbook-desc,
+.share-desc {
+  color: var(--g-muted);
+}
+
+.guestbook-form input,
+.guestbook-form textarea,
+.gb-modal-box input {
+  font-family: inherit;
+  background: var(--g-raised);
+  color: var(--g-text);
+  border: 1px solid var(--g-line-strong);
+  border-radius: 8px;
+}
+
+.guestbook-form input::placeholder,
+.guestbook-form textarea::placeholder,
+.gb-modal-box input::placeholder {
+  color: #6b707a;
+}
+
+.guestbook-form input:focus,
+.guestbook-form textarea:focus,
+.gb-modal-box input:focus {
+  border-color: #b98bdb;
+  box-shadow: 0 0 0 3px rgba(185, 139, 219, 0.18);
+}
+
+.gb-counter {
+  font-family: var(--g-mono);
+  font-size: 11px;
+  color: var(--g-muted);
+}
+
+.gb-status,
+.gb-empty,
+.gb-item {
+  color: var(--g-muted);
+  border-top: 1px solid var(--g-line);
+}
+
+.gb-item-name {
+  color: var(--g-text);
+  font-weight: 600;
+}
+
+.gb-item-date {
+  font-family: var(--g-mono);
+  font-size: 11px;
+  color: var(--g-muted);
+}
+
+.gb-item-delete {
+  color: var(--g-muted);
+}
+
+.gb-item-message {
+  color: var(--g-text);
+}
+
+.gb-modal-backdrop {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.gb-modal-box {
+  background: var(--g-panel);
+  border-radius: 12px;
+  box-shadow: 0 0 0 1px var(--g-line-strong), 0 24px 60px rgba(0, 0, 0, 0.6);
+}
+
+.gb-modal-title {
+  color: var(--g-text);
+}
+
+.gb-modal-desc {
+  color: var(--g-muted);
+}
+
+.gb-modal-btn.danger {
+  background: var(--g-merge);
+  color: #0b0b0e;
+  border: none;
+}
+
+/* ---------- 떠 있는 버튼 ---------- */
+
+.bgm-toggle,
+.to-top {
+  background: rgba(24, 24, 31, 0.85);
+  border: 1px solid var(--g-line-strong);
+  color: var(--g-text);
+}
+
+.to-top-arrow {
+  border-left-color: var(--g-text);
+  border-top-color: var(--g-text);
+}
+
+.bgm-toggle.off .bgm-icon::after {
+  border-top-color: var(--g-text);
+}
+
+/* ---------- 크게 보기 ---------- */
+
+.lightbox {
+  background: #07070a;
+}
+
+.lightbox-close,
+.lightbox-nav {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--g-line-strong);
+  color: var(--g-text);
+}
+
+.lightbox-count {
+  font-family: var(--g-mono);
+  color: var(--g-muted);
+}
+
+/* ---------- 토스트 ---------- */
+
+.toast {
+  font-family: var(--g-mono);
+  font-size: 12px;
+  background: var(--g-raised);
+  color: var(--g-text);
+  border-radius: 8px;
+  box-shadow: 0 0 0 1px var(--g-line-strong);
+}
+
+/* ---------- 푸터 ---------- */
+
+.footer {
+  font-family: var(--g-mono);
+  font-size: 12px;
+  color: var(--g-muted);
+  letter-spacing: 0;
+  border-top: 1px solid var(--g-line);
+}
