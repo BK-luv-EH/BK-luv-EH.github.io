@@ -18,9 +18,11 @@ const CONFIG = {
   // 공유되는 실제 주소. 로컬에서 눌러도 배포된 주소가 전달되도록 고정합니다.
   siteUrl: 'https://bk-luv-eh.github.io',
   // 카카오톡 카드에 들어갈 세로 사진. 갤러리를 손봐도 깨지지 않도록 전용 파일을 씁니다.
-  shareImage: 'images/share-card.jpg',
-  shareImageWidth: 800,
-  shareImageHeight: 1200,
+  // 사진을 바꾸면 ?v= 숫자도 올려주세요. 카카오가 주소 기준으로 이미지를 캐시해서
+  // 같은 주소면 예전 사진이 계속 나옵니다. 가로·세로도 실제 파일과 맞춰야 카드가 잘리지 않습니다.
+  shareImage: 'images/share-card.jpg?v=2',
+  shareImageWidth: 1153,
+  shareImageHeight: 1440,
 };
 
 const KAKAO_SDK_VERSION = '2.7.5';
